@@ -43,7 +43,7 @@ class CancellationRequestSpec extends AnyFreeSpec with Matchers {
             "IntConRefMES11",
             Some("RecRefMES12"),
             Some("RecRefQuaMES13"),
-            "AppRefMES14",
+            Some("AppRefMES14"),
             Some("PriMES15"),
             Some("AckReqMES16"),
             Some("ComAgrIdMES17"),
@@ -120,7 +120,7 @@ class CancellationRequestSpec extends AnyFreeSpec with Matchers {
             "IntConRefMES11",
             None,
             None,
-            "AppRefMES14",
+            None,
             None,
             None,
             None,
@@ -146,7 +146,6 @@ class CancellationRequestSpec extends AnyFreeSpec with Matchers {
         <DatOfPreMES9>DatOfPreMES9</DatOfPreMES9>
         <TimOfPreMES10>TimOfPreMES10</TimOfPreMES10>
         <IntConRefMES11>IntConRefMES11</IntConRefMES11>
-        <AppRefMES14>AppRefMES14</AppRefMES14>
         <MesIdeMES19>MesIdeMES19</MesIdeMES19>
         <MesTypMES20>MesTypMES20</MesTypMES20>
         <HEAHEA>
