@@ -33,7 +33,7 @@ case class MRNAllocatedRootLevel(
                            IntConRefMES11: String,
                            RecRefMES12: Option[String],
                            RecRefQuaMES13: Option[String],
-                           AppRefMES14: String,
+                           AppRefMES14: Option[String],
                            PriMES15: Option[String],
                            AckReqMES16: Option[String],
                            ComAgrIdMES17: Option[String],
@@ -63,7 +63,9 @@ case class MRNAllocatedRootLevel(
       } ++ {
         RecRefQuaMES13.map(value => <RecRefQuaMES13>{value}</RecRefQuaMES13>).getOrElse(NodeSeq.Empty)
       } ++
-      <AppRefMES14>{AppRefMES14}</AppRefMES14> ++
+      {
+        AppRefMES14.map(value => <AppRefMES14>{value}</AppRefMES14>).getOrElse(NodeSeq.Empty)
+      } ++
       {
         PriMES15.map(value => <PriMES15>{value}</PriMES15>).getOrElse(NodeSeq.Empty)
       } ++ {
@@ -100,7 +102,7 @@ object MRNAllocatedRootLevel {
     (__ \ "IntConRefMES11").read[String],
     (__ \ "RecRefMES12").read[String].optional,
     (__ \ "RecRefQuaMES13").read[String].optional,
-    (__ \ "AppRefMES14").read[String],
+    (__ \ "AppRefMES14").read[String].optional,
     (__ \ "PriMES15").read[String].optional,
     (__ \ "AckReqMES16").read[String].optional,
     (__ \ "ComAgrIdMES17").read[String].optional,
