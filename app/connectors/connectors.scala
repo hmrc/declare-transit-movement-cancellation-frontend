@@ -15,10 +15,10 @@
  */
 
 import connectors.responses.{ConnectorErrorResponse, InvalidStatus, MalformedBody}
-import controllers.Assets.OK
 import logging.Logging
 import models.DepartureId
 import play.api.Logger
+import play.api.http.Status.OK
 import play.api.libs.json.{JsError, JsSuccess, Reads}
 import uk.gov.hmrc.http.HttpReads.is2xx
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
