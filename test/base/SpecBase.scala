@@ -30,8 +30,6 @@ import play.api.inject.Injector
 import play.api.libs.json.Json
 import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
-import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.http.logging.Authorization
 
 trait SpecBase
     extends AnyFreeSpec
