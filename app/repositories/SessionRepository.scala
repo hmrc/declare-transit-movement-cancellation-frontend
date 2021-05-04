@@ -21,6 +21,7 @@ import models.{DepartureId, EoriNumber, UserAnswers}
 import play.api.Configuration
 import play.api.libs.json._
 import play.modules.reactivemongo.ReactiveMongoApi
+import reactivemongo.api.bson.collection.BSONSerializationPack
 import reactivemongo.api.indexes.{Index, IndexType}
 import reactivemongo.bson.BSONDocument
 import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
@@ -43,10 +44,29 @@ class DefaultSessionRepository @Inject()(
   private def collection: Future[JSONCollection] =
     mongo.database.map(_.collection[JSONCollection](collectionName))
 
-  private val lastUpdatedIndex = Index(
+  private val lastUpdatedIndex = Index.apply(BSONSerializationPack)(
     key     = Seq("lastUpdated" -> IndexType.Ascending),
     name    = Some("user-answers-last-updated-index"),
-    options = BSONDocument("expireAfterSeconds" -> cacheTtl)
+    unique= true,
+    background= false,
+    dropDups = false,
+    sparse = false,
+    version = None,
+    partialFilter = None,
+    options = BSONDocument("expireAfterSeconds" -> cacheTtl),
+    expireAfterSeconds = Some(cacheTtl),
+    storageEngine = None,
+    weights = None,
+    defaultLanguage = None,
+    languageOverride = None,
+    textIndexVersion = None,
+    sphereIndexVersion = None,
+    bits = None,
+    min = None,
+    max = None,
+    bucketSize = None,
+    collation = None,
+    wildcardProjection = None
   )
 
   val started: Future[Unit] =

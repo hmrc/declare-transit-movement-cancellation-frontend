@@ -7,8 +7,6 @@ import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
 lazy val appName: String = "declare-transit-movement-cancellation-frontend"
 val silencerVersion = "1.6.0"
 
-resolvers += "hmrc-releases" at "https://artefacts.tax.service.gov.uk/artifactory/hmrc-releases/"
-
 lazy val root = (project in file("."))
   .enablePlugins(
     PlayScala,
