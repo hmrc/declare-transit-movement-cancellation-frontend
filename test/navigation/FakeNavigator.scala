@@ -16,10 +16,8 @@
 
 package navigation
 
-import com.google.inject.Inject
-import models.{Mode, NormalMode, UserAnswers}
+import models.UserAnswers
 import pages.Page
-import play.api.Mode
 import play.api.mvc.Call
 
 class FakeNavigator(desiredRoute: Call)  {
