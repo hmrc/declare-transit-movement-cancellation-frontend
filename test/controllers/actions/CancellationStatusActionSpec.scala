@@ -27,7 +27,6 @@ import org.mockito.{ArgumentCaptor, Mockito}
 import org.scalacheck.Gen
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
-import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks.forAll
 import play.api.libs.json.JsObject
 import play.api.mvc.Results._
 import play.api.mvc._
