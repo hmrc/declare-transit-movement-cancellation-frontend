@@ -21,6 +21,7 @@ import com.github.tomakehurst.wiremock.client.WireMock._
 import connectors.responses.{InvalidStatus, MalformedBody}
 import generators.Generators
 import helper.WireMockServerHandler
+import models.DepartureStatus.DepartureSubmitted
 import models.LocalReferenceNumber
 import models.messages.CancellationRequest
 import models.response._
@@ -50,7 +51,7 @@ class DepartureMovementConnectorSpec extends SpecBase with WireMockServerHandler
 
   private val departuresResponseJson = Json.obj(
     "referenceNumber" -> "lrn",
-    "status"          -> "Submitted"
+    "status"          -> "DepartureSubmitted"
   )
 
   val errorResponses: Gen[Int] = Gen.chooseNum(400, 599)
@@ -61,7 +62,7 @@ class DepartureMovementConnectorSpec extends SpecBase with WireMockServerHandler
         val expectedResult = {
           ResponseDeparture(
             LocalReferenceNumber("lrn"),
-            "Submitted"
+            DepartureSubmitted
           )
         }
 

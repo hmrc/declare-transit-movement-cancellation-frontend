@@ -18,10 +18,11 @@ package controllers.actions
 
 import config.FrontendAppConfig
 import connectors.DepartureMovementConnector
-import models.DepartureId
+import models.DepartureStatus.{ControlDecisionNotification, DeclarationCancellationRequestNegativeAcknowledgement, GuaranteeNotValid, MrnAllocated, NoReleaseForTransit}
 import models.requests.{AuthorisedRequest, IdentifierRequest}
 import models.response.ResponseDeparture
-import play.api.libs.json.{JsObject, Json}
+import models.{DepartureId, DepartureStatus}
+import play.api.libs.json.Json
 import play.api.mvc.Results._
 import play.api.mvc.{ActionRefiner, Result}
 import renderer.Renderer
@@ -47,7 +48,11 @@ class CancellationStatusAction(
 )(implicit protected val executionContext: ExecutionContext)
     extends ActionRefiner[IdentifierRequest, AuthorisedRequest] {
 
-  final val validStatus: Seq[String] = Seq("GuaranteeNotValid", "MrnAllocated", "NoReleaseForTransit","ControlDecisionNotification" )
+  final val validStatus: Seq[DepartureStatus] = Seq(GuaranteeNotValid,
+      MrnAllocated,
+      NoReleaseForTransit,
+      ControlDecisionNotification,
+      DeclarationCancellationRequestNegativeAcknowledgement)
 
   override protected def refine[A](request: IdentifierRequest[A]): Future[Either[Result, AuthorisedRequest[A]]] = {
 
