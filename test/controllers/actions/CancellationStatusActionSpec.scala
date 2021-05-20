@@ -18,9 +18,10 @@ package controllers.actions
 
 import base.{MockNunjucksRendererApp, SpecBase}
 import connectors.DepartureMovementConnector
+import models.DepartureStatus.{ControlDecisionNotification, GuaranteeNotValid, MrnAllocated, NoReleaseForTransit, WriteOffNotification}
 import models.requests.IdentifierRequest
 import models.response.ResponseDeparture
-import models.{DepartureId, EoriNumber, LocalReferenceNumber}
+import models.{DepartureId, DepartureStatus, EoriNumber, LocalReferenceNumber}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{times, verify, when}
 import org.mockito.{ArgumentCaptor, Mockito}
@@ -42,7 +43,7 @@ import scala.concurrent.Future
 class CancellationStatusActionSpec extends SpecBase with BeforeAndAfterEach with MockNunjucksRendererApp with NunjucksSupport  with ScalaCheckPropertyChecks {
 
   val mockConnector: DepartureMovementConnector = mock[DepartureMovementConnector]
-  val validStatus: Seq[String] = Seq("GuaranteeNotValid", "MrnAllocated", "NoReleaseForTransit", "ControlDecisionNotification")
+  val validStatus: Seq[DepartureStatus] = Seq(GuaranteeNotValid, MrnAllocated, NoReleaseForTransit, ControlDecisionNotification)
 
   val renderer: Renderer = app.injector.instanceOf[Renderer]
 
@@ -82,11 +83,12 @@ class CancellationStatusActionSpec extends SpecBase with BeforeAndAfterEach with
 
       }
     }
+
     "will get a 400 and will load the cannot cancel page when the departure status is invalid" in {
       val mockDepartureResponse: ResponseDeparture = {
         ResponseDeparture(
           LocalReferenceNumber("lrn"),
-          "InvalidStatus"
+          WriteOffNotification
         )
       }
 

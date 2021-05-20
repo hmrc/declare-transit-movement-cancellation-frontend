@@ -19,6 +19,7 @@ package controllers
 import base.{MockNunjucksRendererApp, SpecBase}
 import connectors.DepartureMovementConnector
 import matchers.JsonMatchers
+import models.DepartureStatus.DepartureSubmitted
 import models.LocalReferenceNumber
 import models.response.ResponseDeparture
 import org.mockito.ArgumentCaptor
@@ -41,7 +42,7 @@ class CancellationSubmissionConfirmationControllerSpec extends SpecBase with Moc
   private val mockDepartureResponse: ResponseDeparture = {
     ResponseDeparture(
       LocalReferenceNumber("lrn"),
-      "Submitted"
+      DepartureSubmitted
     )
   }
 

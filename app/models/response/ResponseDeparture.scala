@@ -16,16 +16,16 @@
 
 package models.response
 
-import models.LocalReferenceNumber
-import play.api.libs.json.{__, Reads}
+import models.{DepartureStatus, LocalReferenceNumber}
+import play.api.libs.json.{Reads, __}
 
-case class ResponseDeparture(localReferenceNumber: LocalReferenceNumber, status: String)
+case class ResponseDeparture(localReferenceNumber: LocalReferenceNumber, status: DepartureStatus)
 import play.api.libs.functional.syntax._
 
 object ResponseDeparture {
   implicit val reads: Reads[ResponseDeparture] = (
     (__ \ "referenceNumber").read[LocalReferenceNumber] and
-      (__ \ "status").read[String]
+      (__ \ "status").read[DepartureStatus]
   )(ResponseDeparture.apply _)
 
 }
