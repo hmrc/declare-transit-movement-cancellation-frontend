@@ -49,10 +49,10 @@ class Navigator @Inject()(val appConfig: FrontendAppConfig) {
       case None              => routes.SessionExpiredController.onPageLoad()
     }
 
-  def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call = mode match {
+  def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers, departureId: DepartureId): Call = mode match {
     case NormalMode =>
       normalRoutes.lift(page) match {
-        case None       => routes.IndexController.onPageLoad()
+        case None       => routes.ConfirmCancellationController.onPageLoad(departureId)
         case Some(call) => handleCall(userAnswers, call)
       }
   }

@@ -88,7 +88,7 @@ class ConfirmCancellationController @Inject()(
               for {
                 updatedAnswers <- Future.fromTry(userAnswers.set(ConfirmCancellationPage(departureId), value))
                 _              <- sessionRepository.set(updatedAnswers)
-              } yield Redirect(navigator.nextPage(ConfirmCancellationPage(departureId), mode, updatedAnswers))
+              } yield Redirect(navigator.nextPage(ConfirmCancellationPage(departureId), mode, updatedAnswers, departureId))
             }
           )
 
