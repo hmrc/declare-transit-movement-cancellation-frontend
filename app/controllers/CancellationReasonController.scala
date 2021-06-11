@@ -83,16 +83,15 @@ class CancellationReasonController @Inject()(
               Future
                 .fromTry(request.userAnswers.set(CancellationReasonPage(departureId), value))
                 .flatMap(updatedAnswers =>
-                  cancellationSubmissionService.submitCancellation(updatedAnswers).flatMap{
-                    case Right(_) => Future.successful(Redirect(navigator.nextPage(CancellationReasonPage(departureId), mode, updatedAnswers)))
+                  cancellationSubmissionService.submitCancellation(updatedAnswers).flatMap {
+                    case Right(_) => Future.successful(Redirect(navigator.nextPage(CancellationReasonPage(departureId), mode, updatedAnswers, departureId)))
                     case Left(_) => {
                       val json = Json.obj(
                         "contactUrl" -> appConfig.nctsEnquiriesUrl
                       )
                       renderer.render("technicalDifficulties.njk", json).map(content => InternalServerError(content))
                     }
-                  }
-                )
+                })
             }
           )
 

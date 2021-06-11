@@ -40,8 +40,8 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
       forAll(arbitrary[UserAnswers]) {
         answers =>
           navigator
-            .nextPage(UnknownPage, NormalMode, answers)
-            .mustBe(routes.IndexController.onPageLoad())
+            .nextPage(UnknownPage, NormalMode, answers, departureId)
+            .mustBe(routes.ConfirmCancellationController.onPageLoad(departureId))
 
       }
     }
@@ -54,7 +54,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
             .success
             .value
           navigator
-            .nextPage(ConfirmCancellationPage(departureId), NormalMode, updatedAnswers)
+            .nextPage(ConfirmCancellationPage(departureId), NormalMode, updatedAnswers, departureId)
             .mustBe(routes.CancellationReasonController.onPageLoad(departureId))
       }
     }
@@ -67,7 +67,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
             .success
             .value
           navigator
-            .nextPage(ConfirmCancellationPage(departureId), NormalMode, updatedAnswers)
+            .nextPage(ConfirmCancellationPage(departureId), NormalMode, updatedAnswers, departureId)
             .url
             .mustBe(viewDepartures)
       }
@@ -81,7 +81,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
             .success
             .value
           navigator
-            .nextPage(CancellationReasonPage(departureId), NormalMode, updatedAnswers)
+            .nextPage(CancellationReasonPage(departureId), NormalMode, updatedAnswers, departureId)
             .mustBe(routes.CancellationSubmissionConfirmationController.onPageLoad(departureId))
       }
     }
