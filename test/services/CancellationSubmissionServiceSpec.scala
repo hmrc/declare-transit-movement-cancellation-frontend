@@ -106,8 +106,7 @@ class CancellationSubmissionServiceSpec extends AnyFreeSpec with Matchers with M
         Some("ComAgrIdMES17"),
         Some("TesIndMES18"),
         "MesIdeMES19",
-        "MesTypMES20",
-        Some("ComAccRefMES21"),
+          Some("ComAccRefMES21"),
         Some("MesSeqNumMES22"),
         Some("FirAndLasTraMES23")
       ),

@@ -39,7 +39,6 @@ case class MRNAllocatedRootLevel(
                            ComAgrIdMES17: Option[String],
                            TesIndMES18: Option[String],
                            MesIdeMES19: String,
-                           MesTypMES20: String,
                            ComAccRefMES21: Option[String],
                            MesSeqNumMES22: Option[String],
                            FirAndLasTraMES23: Option[String],
@@ -78,7 +77,7 @@ case class MRNAllocatedRootLevel(
         TesIndMES18.map(value => <TesIndMES18>{value}</TesIndMES18>).getOrElse(NodeSeq.Empty)
       } ++
       <MesIdeMES19>{MesIdeMES19}</MesIdeMES19>
-      <MesTypMES20>{MesTypMES20}</MesTypMES20> ++
+      <MesTypMES20>CC014A</MesTypMES20> ++
       {
         ComAccRefMES21.map(value => <ComAccRefMES21>{value}</ComAccRefMES21>).getOrElse(NodeSeq.Empty)
       } ++ {
@@ -108,7 +107,6 @@ object MRNAllocatedRootLevel {
     (__ \ "ComAgrIdMES17").read[String].optional,
     (__ \ "TesIndMES18").read[String].optional,
     (__ \ "MesIdeMES19").read[String],
-    (__ \ "MesTypMES20").read[String],
     (__ \ "ComAccRefMES21").read[String].optional,
     (__ \ "MesSeqNumMES22").read[String].optional,
     (__ \ "FirAndLasTraMES23").read[String].optional

@@ -166,7 +166,7 @@ class DepartureMovementConnectorSpec extends SpecBase with WireMockServerHandler
         <ComAgrIdMES17>ComAgrIdMES17</ComAgrIdMES17>
         <TesIndMES18>TesIndMES18</TesIndMES18>
         <MesIdeMES19>MesIdeMES19</MesIdeMES19>
-        <MesTypMES20>MesTypMES20</MesTypMES20>
+        <MesTypMES20>CC014A</MesTypMES20>
         <ComAccRefMES21>ComAccRefMES21</ComAccRefMES21>
         <MesSeqNumMES22>MesSeqNumMES22</MesSeqNumMES22>
         <FirAndLasTraMES23>FirAndLasTraMES23</FirAndLasTraMES23>
@@ -217,7 +217,6 @@ class DepartureMovementConnectorSpec extends SpecBase with WireMockServerHandler
             Some("ComAgrIdMES17"),
             Some("TesIndMES18"),
             "MesIdeMES19",
-            "MesTypMES20",
             Some("ComAccRefMES21"),
             Some("MesSeqNumMES22"),
             Some("FirAndLasTraMES23")
@@ -298,7 +297,6 @@ class DepartureMovementConnectorSpec extends SpecBase with WireMockServerHandler
             Some("ComAgrIdMES17"),
             Some("TesIndMES18"),
             "MesIdeMES19",
-            "MesTypMES20",
             Some("ComAckRef"),
             Some("MesSeqNum"),
             None
