@@ -76,7 +76,6 @@ class MRNAllocatedMessageSpec extends AnyFreeSpec with Matchers with OptionValue
             None,
             None,
             "MesIdeMES19",
-            "MesTypMES20",
             None,
             None,
             None
@@ -150,7 +149,6 @@ class MRNAllocatedMessageSpec extends AnyFreeSpec with Matchers with OptionValue
             Some("ComAgrIdMES17"),
             Some("TesIndMES18"),
             "MesIdeMES19",
-            "MesTypMES20",
             Some("ComAccRefMES21"),
             Some("MesSeqNumMES22"),
             Some("FirAndLasTraMES23")
@@ -253,7 +251,6 @@ class MRNAllocatedMessageSpec extends AnyFreeSpec with Matchers with OptionValue
             Some("ComAgrIdMES17"),
             Some("TesIndMES18"),
             "MesIdeMES19",
-            "MesTypMES20",
             Some("ComAccRefMES21"),
             Some("MesSeqNumMES22"),
             Some("FirAndLasTraMES23")
