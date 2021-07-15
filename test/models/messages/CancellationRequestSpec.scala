@@ -78,7 +78,7 @@ class CancellationRequestSpec extends AnyFreeSpec with Matchers {
         <ComAgrIdMES17>ComAgrIdMES17</ComAgrIdMES17>
         <TesIndMES18>TesIndMES18</TesIndMES18>
         <MesIdeMES19>MesIdeMES19</MesIdeMES19>
-        <MesTypMES20>CC014A</MesTypMES20>
+        <MesTypMES20>GB014A</MesTypMES20>
         <ComAccRefMES21>ComAccRefMES21</ComAccRefMES21>
         <MesSeqNumMES22>MesSeqNumMES22</MesSeqNumMES22>
         <FirAndLasTraMES23>FirAndLasTraMES23</FirAndLasTraMES23>
@@ -145,7 +145,7 @@ class CancellationRequestSpec extends AnyFreeSpec with Matchers {
         <TimOfPreMES10>TimOfPreMES10</TimOfPreMES10>
         <IntConRefMES11>IntConRefMES11</IntConRefMES11>
         <MesIdeMES19>MesIdeMES19</MesIdeMES19>
-        <MesTypMES20>CC014A</MesTypMES20>
+        <MesTypMES20>GB014A</MesTypMES20>
         <HEAHEA>
           <DocNumHEA5>mrn</DocNumHEA5>
           <DatOfCanReqHEA147>20180422</DatOfCanReqHEA147>

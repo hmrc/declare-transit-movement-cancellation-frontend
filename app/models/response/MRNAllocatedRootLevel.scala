@@ -77,7 +77,7 @@ case class MRNAllocatedRootLevel(
         TesIndMES18.map(value => <TesIndMES18>{value}</TesIndMES18>).getOrElse(NodeSeq.Empty)
       } ++
       <MesIdeMES19>{MesIdeMES19}</MesIdeMES19>
-      <MesTypMES20>CC014A</MesTypMES20> ++
+      <MesTypMES20>GB014A</MesTypMES20> ++
       {
         ComAccRefMES21.map(value => <ComAccRefMES21>{value}</ComAccRefMES21>).getOrElse(NodeSeq.Empty)
       } ++ {

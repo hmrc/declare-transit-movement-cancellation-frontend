@@ -43,7 +43,7 @@ class CancellationSubmissionService @Inject()(
                 case Right(mrnMessage) =>
                   connector.submitCancellation(userAnswers.id, CancellationRequest(cancellationReason, timeMachine.today(), mrnMessage)).map {
                     case Right(value) => Right(value)
-                    case Left(_) => Left(InvalidState)
+                    case Left(_)      => Left(InvalidState)
                   }
                 case _ => Future.successful(Left(InvalidState))
               }
