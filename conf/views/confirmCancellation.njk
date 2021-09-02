@@ -20,7 +20,6 @@
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
 
-<span class="govuk-caption-xl">{{lrn}}</span>
         {% if form.errors.length > 0 %}
           {{ govukErrorSummary({
             "titleText": messages("error.summary.title"),
@@ -32,12 +31,15 @@
 
           {{ csrf() | safe }}
 
+          {% set legendHtml = ['<span class="govuk-caption-xl">', lrn, '</span>', '<h1 class="govuk-fieldset__heading">', messages("confirmCancellation.heading"), '</h1>'] | join %}
+
           {{ govukRadios({
             name: 'value',
             fieldset: {
               legend: {
-                text: messages('confirmCancellation.heading'),
-                isPageHeading: true,
+                text: "",
+                html: legendHtml,
+                isPageHeading: false,
                 classes: "govuk-fieldset__legend--xl"
               }
             },
