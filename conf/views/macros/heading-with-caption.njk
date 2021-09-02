@@ -1,8 +1,8 @@
 {% macro headingWithCaption(caption, headingKey) %}
-  {% set legendHtml = [
+  {% set html = [
     '<span class="govuk-caption-xl">', caption, '</span>',
     '<h1 class="govuk-fieldset__heading">', messages(headingKey), '</h1>'
   ] | join %}
 
-  {{ legendHtml | safe }}
+  {{ html | safe }}
 {% endmacro %}
