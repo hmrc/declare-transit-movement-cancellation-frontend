@@ -5,6 +5,7 @@
 {% from "govuk/components/button/macro.njk"        import govukButton %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "macros/title.njk"                         import title %}
+{% from "macros/heading-with-caption.njk"          import headingWithCaption %}
 
 {% block pageTitle %}
   {{ title(messages("confirmCancellation.title"), form.errors) }}
@@ -31,14 +32,11 @@
 
           {{ csrf() | safe }}
 
-          {% set legendHtml = ['<span class="govuk-caption-xl">', lrn, '</span>', '<h1 class="govuk-fieldset__heading">', messages("confirmCancellation.heading"), '</h1>'] | join %}
-
           {{ govukRadios({
             name: 'value',
             fieldset: {
               legend: {
-                text: "",
-                html: legendHtml,
+                html: headingWithCaption(lrn, "confirmCancellation.heading"),
                 isPageHeading: false,
                 classes: "govuk-fieldset__legend--xl"
               }
