@@ -20,7 +20,7 @@ import com.google.inject.{Inject, Singleton}
 import config.FrontendAppConfig
 import controllers.routes
 import models._
-import pages.{ConfirmCancellationPage, _}
+import pages._
 import play.api.mvc.Call
 
 @Singleton
@@ -31,16 +31,16 @@ class Navigator @Inject()(val appConfig: FrontendAppConfig) {
 
     case ConfirmCancellationPage(departureId) =>
       ua =>
-        Some(confirmCancellationRoute(ua, departureId))
+        confirmCancellationRoute(ua, departureId)
     case CancellationReasonPage(departureId) =>
-      ua =>
+      _ =>
         Some(routes.CancellationSubmissionConfirmationController.onPageLoad(departureId))
   }
 
-  def confirmCancellationRoute(ua: UserAnswers, departureId: DepartureId): Call =
-    ua.get(ConfirmCancellationPage(departureId)) match {
-      case Some(true)  => routes.CancellationReasonController.onPageLoad(departureId)
-      case Some(false) => Call("GET", viewDepartures)
+  def confirmCancellationRoute(ua: UserAnswers, departureId: DepartureId): Option[Call] =
+    ua.get(ConfirmCancellationPage(departureId)) map {
+      case true  => routes.CancellationReasonController.onPageLoad(departureId)
+      case false => Call("GET", viewDepartures)
     }
 
   private def handleCall(userAnswers: UserAnswers, call: UserAnswers => Option[Call]) =
@@ -49,11 +49,9 @@ class Navigator @Inject()(val appConfig: FrontendAppConfig) {
       case None              => routes.SessionExpiredController.onPageLoad()
     }
 
-  def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers, departureId: DepartureId): Call = mode match {
-    case NormalMode =>
-      normalRoutes.lift(page) match {
-        case None       => routes.ConfirmCancellationController.onPageLoad(departureId)
-        case Some(call) => handleCall(userAnswers, call)
-      }
-  }
+  def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers, departureId: DepartureId): Call =
+    normalRoutes.lift(page) match {
+      case None       => routes.ConfirmCancellationController.onPageLoad(departureId)
+      case Some(call) => handleCall(userAnswers, call)
+    }
 }

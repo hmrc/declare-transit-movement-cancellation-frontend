@@ -16,10 +16,8 @@
 
 package models
 
-import play.api.libs.json.{Reads, _}
+import play.api.libs.json._
 import play.api.mvc.PathBindable
-
-import scala.language.implicitConversions
 
 case class DepartureId(index: Int)
 

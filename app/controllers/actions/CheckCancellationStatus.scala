@@ -18,7 +18,7 @@ package controllers.actions
 
 import config.FrontendAppConfig
 import connectors.DepartureMovementConnector
-import models.DepartureStatus.{ControlDecisionNotification, DeclarationCancellationRequestNegativeAcknowledgement, GuaranteeNotValid, MrnAllocated, NoReleaseForTransit}
+import models.DepartureStatus._
 import models.requests.{AuthorisedRequest, IdentifierRequest}
 import models.response.ResponseDeparture
 import models.{DepartureId, DepartureStatus}
@@ -27,7 +27,7 @@ import play.api.mvc.Results._
 import play.api.mvc.{ActionRefiner, Result}
 import renderer.Renderer
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.HeaderCarrierConverter
+import uk.gov.hmrc.play.http.HeaderCarrierConverter
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -56,7 +56,8 @@ class CancellationStatusAction(
 
   override protected def refine[A](request: IdentifierRequest[A]): Future[Either[Result, AuthorisedRequest[A]]] = {
 
-    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
+    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
+
     departureMovementConnector.getDeparture(departureId).flatMap {
       case Some(responseDeparture: ResponseDeparture) if !validStatus.contains(responseDeparture.status) =>
         renderer
