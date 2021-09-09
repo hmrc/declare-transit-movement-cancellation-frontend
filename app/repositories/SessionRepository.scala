@@ -16,15 +16,14 @@
 
 package repositories
 
-import akka.stream.Materializer
 import models.{DepartureId, EoriNumber, UserAnswers}
 import play.api.Configuration
 import play.api.libs.json._
 import play.modules.reactivemongo.ReactiveMongoApi
+import reactivemongo.api.bson.BSONDocument
 import reactivemongo.api.bson.collection.BSONSerializationPack
 import reactivemongo.api.indexes.{Index, IndexType}
-import reactivemongo.bson.BSONDocument
-import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
+import reactivemongo.play.json.collection.Helpers.idWrites
 import reactivemongo.play.json.collection.JSONCollection
 
 import java.time.LocalDateTime
@@ -34,7 +33,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class DefaultSessionRepository @Inject()(
   mongo: ReactiveMongoApi,
   config: Configuration
-)(implicit ec: ExecutionContext, m: Materializer)
+)(implicit ec: ExecutionContext)
     extends SessionRepository {
 
   private val collectionName: String = "user-answers"

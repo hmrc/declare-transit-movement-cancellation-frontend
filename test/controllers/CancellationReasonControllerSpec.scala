@@ -27,8 +27,8 @@ import org.scalatestplus.mockito.MockitoSugar
 import pages.CancellationReasonPage
 import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.Call
-import play.api.test.{FakeRequest, Helpers}
 import play.api.test.Helpers._
+import play.api.test.{FakeRequest, Helpers}
 import play.twirl.api.Html
 import services.responses.InvalidState
 import uk.gov.hmrc.http.HttpResponse
@@ -98,8 +98,6 @@ class CancellationReasonControllerSpec extends SpecBase with MockNunjucksRendere
       status(result) mustEqual OK
 
       verify(mockRenderer, times(1)).render(templateCaptor.capture(), jsonCaptor.capture())(any())
-
-      val filledForm = form.bind(Map("value" -> "answer"))
 
       templateCaptor.getValue mustEqual template
     }

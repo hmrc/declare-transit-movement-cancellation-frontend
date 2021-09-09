@@ -18,7 +18,7 @@ package models.response
 
 import cats.syntax.all._
 import com.lucidchart.open.xtract.{XmlReader, __}
-import play.api.libs.json.{JsError, JsResult, JsSuccess, JsValue, Reads}
+import play.api.libs.json.{JsError, JsSuccess, JsValue, Reads}
 import utils.NodeSeqFormat
 
 import scala.xml.NodeSeq
@@ -31,10 +31,9 @@ case class MRNAllocatedMessage(
                                 customsOfficeReference: String
                               )
 
-
 object MRNAllocatedMessage extends NodeSeqFormat {
   implicit val xmlReader: XmlReader[MRNAllocatedMessage] = (
-    (__).read[MRNAllocatedRootLevel],
+    __.read[MRNAllocatedRootLevel],
     (__ \ "HEAHEA" \ "DocNumHEA5").read[String],
     (__ \ "TRAPRIPC1").read[PrincipalTraderDetails],
     (__ \ "CUSOFFDEPEPT" \ "RefNumEPT1").read[String]

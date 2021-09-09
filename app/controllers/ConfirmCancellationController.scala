@@ -18,7 +18,6 @@ package controllers
 
 import controllers.actions._
 import forms.ConfirmCancellationFormProvider
-import models.requests.AuthorisedRequest
 import models.{DepartureId, Mode, UserAnswers}
 import navigation.Navigator
 import pages.ConfirmCancellationPage

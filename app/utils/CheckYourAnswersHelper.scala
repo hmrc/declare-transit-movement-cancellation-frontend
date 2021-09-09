@@ -19,13 +19,10 @@ package utils
 import controllers.routes
 import models.{DepartureId, UserAnswers}
 import pages._
-import play.api.i18n.Messages
 import uk.gov.hmrc.viewmodels.SummaryList._
 import uk.gov.hmrc.viewmodels._
 
-import java.time.format.DateTimeFormatter
-
-class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
+class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
   def cancellationReason(departureId: DepartureId): Option[Row] = userAnswers.get(CancellationReasonPage(departureId)) map {
     answer =>
@@ -63,9 +60,4 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     } else {
       msg"site.no"
     }
-}
-
-object CheckYourAnswersHelper {
-
-  private val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
 }
