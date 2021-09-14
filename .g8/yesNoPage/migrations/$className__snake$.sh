@@ -17,7 +17,7 @@ echo "Adding to UserAnswersEntryGenerators"
 awk '/self: Generators =>/ {\
     print;\
     print "";\
-    print "  implicit lazy val arbitrary$className$UserAnswersEntry: Arbitrary[($className$Page.type, JsValue)] =";\
+    print "  implicit lazy val arbitrary$className$UserAnswersEntry: Arbitrary[($className$Page, JsValue)] =";\
     print "    Arbitrary {";\
     print "      for {";\
     print "        page <- arbitrary[$className$Page]";\

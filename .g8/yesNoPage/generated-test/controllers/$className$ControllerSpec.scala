@@ -15,18 +15,27 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import play.twirl.api.Html
 import uk.gov.hmrc.viewmodels.{NunjucksSupport, Radios}
+import config.FrontendAppConfig
+import play.api.inject.bind
+import play.api.inject.guice.GuiceApplicationBuilder
+import navigation.{FakeNavigator, Navigator}
 
 import scala.concurrent.Future
 
 class $className$ControllerSpec extends SpecBase with NunjucksSupport with JsonMatchers {
 
-  def onwardRoute = Call("GET", "/manage-transit-movements-departures-cancel/1/confirm-cancellation")
+  def onwardRoute = Call("GET", "/foo")
   private val formProvider = new $className$FormProvider()
   private val form = formProvider()
   private val template = "$className;format="decap"$.njk"
+  private val mockFrontendAppConfig = mock[FrontendAppConfig]
 
   lazy val $className;format="decap"$Route = routes.$className$Controller.onPageLoad(departureId, NormalMode).url
 
+  override def guiceApplicationBuilder(): GuiceApplicationBuilder =
+    super
+      .guiceApplicationBuilder()
+      .overrides(bind(classOf[Navigator]).toInstance(new FakeNavigator(onwardRoute, mockFrontendAppConfig)))
 
   "$className$ Controller" - {
 
