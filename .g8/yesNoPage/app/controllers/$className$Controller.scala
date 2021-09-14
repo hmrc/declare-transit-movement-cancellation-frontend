@@ -36,12 +36,12 @@ class $className;format="cap"$Controller @Inject()(
   (identify andThen checkCancellationStatus(departureId) andThen getData(departureId)).async {
     implicit request =>
 
-
   val json = Json.obj(
-        "form"   -> form,
-        "mode"   -> mode,
-        "departureId"    -> departureId,
-        "radios" -> Radios.yesNo(form("value"))
+        "form"        -> form,
+        "lrn"         -> request.lrn,
+        "mode"        -> mode,
+        "departureId" -> departureId,
+        "radios"      -> Radios.yesNo(form("value"))
       )
 
       renderer.render(template, json).map(Ok(_))
@@ -56,10 +56,11 @@ class $className;format="cap"$Controller @Inject()(
         formWithErrors => {
 
           val json = Json.obj(
-            "form"   -> formWithErrors,
-            "mode"   -> mode,
+            "form"           -> formWithErrors,
+            "lrn"            -> request.lrn,
+            "mode"           -> mode,
             "departureId"    -> departureId,
-            "radios" -> Radios.yesNo(formWithErrors("value"))
+            "radios"         -> Radios.yesNo(formWithErrors("value"))
           )
 
           renderer.render(template, json).map(BadRequest(_))

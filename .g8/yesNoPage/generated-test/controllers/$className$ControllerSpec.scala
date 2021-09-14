@@ -4,7 +4,7 @@ import base.{MockNunjucksRendererApp, SpecBase}
 import controllers.actions.FakeDataRetrievalAction
 import forms.$className$FormProvider
 import matchers.JsonMatchers
-import models.{NormalMode, UserAnswers}
+import models.{NormalMode, UserAnswers, LocalReferenceNumber}
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{times, verify, when}
@@ -19,6 +19,7 @@ import config.FrontendAppConfig
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import navigation.{FakeNavigator, Navigator}
+
 
 import scala.concurrent.Future
 
@@ -60,6 +61,7 @@ class $className$ControllerSpec extends SpecBase with NunjucksSupport with JsonM
 
       val expectedJson = Json.obj(
         "form"        -> form,
+        "lrn"         -> LocalReferenceNumber(""),
         "departureId" -> departureId,
         "radios"      -> Radios.yesNo(form("value"))
       )
@@ -152,6 +154,7 @@ class $className$ControllerSpec extends SpecBase with NunjucksSupport with JsonM
 
       val expectedJson = Json.obj(
         "form"   -> boundForm,
+        "lrn"         -> LocalReferenceNumber(""),
         "departureId" -> departureId,
         "radios" -> Radios.yesNo(form("value"))
       )

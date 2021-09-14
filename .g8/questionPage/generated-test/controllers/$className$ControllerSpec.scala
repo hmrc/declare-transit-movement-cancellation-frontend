@@ -1,7 +1,7 @@
 package controllers
 
 import forms.$className$FormProvider
-import models.{$className$, NormalMode, UserAnswers}
+import models.{$className$, NormalMode, UserAnswers, LocalReferenceNumber}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.any
@@ -59,6 +59,7 @@ class $className$ControllerSpec extends SpecBase with MockNunjucksRendererApp wi
 
       val expectedJson = Json.obj(
         "form" -> form,
+        "lrn"         -> LocalReferenceNumber(""),
         "departureId"  -> departureId,
         "mode" -> NormalMode
       )
@@ -98,6 +99,7 @@ class $className$ControllerSpec extends SpecBase with MockNunjucksRendererApp wi
 
       val expectedJson = Json.obj(
         "form" -> filledForm,
+        "lrn"         -> LocalReferenceNumber(""),
         "departureId" -> departureId,
         "mode" -> NormalMode
       )
@@ -148,6 +150,7 @@ class $className$ControllerSpec extends SpecBase with MockNunjucksRendererApp wi
 
       val expectedJson = Json.obj(
         "form" -> boundForm,
+        "lrn"         -> LocalReferenceNumber(""),
         "departureId"  -> departureId,
         "mode" -> NormalMode
       )
