@@ -27,12 +27,11 @@ echo "$className;format="decap"$.error.$field2Name$.length = $field2Name$ must b
 echo "Adding to UserAnswersEntryGenerators"
 awk '/self: Generators =>/ {\
     print;\
-    print "  implicit lazy val arbitrary$className$UserAnswersEntry: Arbitrary[($className$Page, JsValue)] =";\
-    print "    Arbitrary {";\
-    print "      for {";\
-    print "        page <- arbitrary[$className$Page]";\
-    print "        value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))";\
-    print "      } yield (page, value)";\
+    print "  implicit lazy val arbitrary$className$UserAnswersEntry: Arbitrary[($className$Page.type, JsValue)] =";\
+     print "    Arbitrary {";\
+     print "      for {";\
+     print "        value <- arbitrary[$className$Page.type#Data].map(Json.toJson(_))";\
+     print "      } yield ($className$Page, value)";\
     print "    }";\
     next }1' ../test/generators/UserAnswersEntryGenerators.scala > tmp && mv tmp ../test/generators/UserAnswersEntryGenerators.scala
 

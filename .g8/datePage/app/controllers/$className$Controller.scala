@@ -3,16 +3,15 @@ package controllers
 import controllers.actions._
 import forms.$className$FormProvider
 import javax.inject.Inject
-import models.{Mode, LocalReferenceNumber}
+import models.{Mode, DepartureId}
 import pages.$className$Page
 import navigation.Navigator
-import navigation.annotations.$navRoute$
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import renderer.Renderer
 import repositories.SessionRepository
-import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.viewmodels.{DateInput, NunjucksSupport}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -20,9 +19,10 @@ import scala.concurrent.{ExecutionContext, Future}
 class $className$Controller @Inject()(
                                        override val messagesApi: MessagesApi,
                                        sessionRepository: SessionRepository,
-                                       @$navRoute$ navigator: Navigator,
+                                       navigator: Navigator,
                                        identify: IdentifierAction,
                                        getData: DataRetrievalActionProvider,
+                                       checkCancellationStatus: CheckCancellationStatusProvider,
                                        requireData: DataRequiredAction,
                                        formProvider: $className$FormProvider,
                                        val controllerComponents: MessagesControllerComponents,
@@ -32,10 +32,10 @@ class $className$Controller @Inject()(
   private val form = formProvider()
   private val template = "$className;format="decap"$.njk"
 
-  def onPageLoad(lrn: LocalReferenceNumber, mode: Mode): Action[AnyContent] = (identify andThen getData(lrn) andThen requireData).async {
+  def onPageLoad(departureId: DepartureId, mode: Mode): Action[AnyContent] = (identify andThen checkCancellationStatus(departureId) andThen getData(departureId) andThen requireData).async {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get($className$Page) match {
+      val preparedForm = request.userAnswers.get($className$Page(departureId)) match {
         case Some(value) => form.fill(value)
         case None        => form
       }
@@ -45,14 +45,15 @@ class $className$Controller @Inject()(
       val json = Json.obj(
         "form" -> preparedForm,
         "mode" -> mode,
-        "lrn"  -> lrn,
+        "lrn"  -> request.lrn,
+        "departureId" -> departureId,
         "date" -> viewModel
       )
 
       renderer.render(template, json).map(Ok(_))
   }
 
-  def onSubmit(lrn: LocalReferenceNumber, mode: Mode): Action[AnyContent] = (identify andThen getData(lrn) andThen requireData).async {
+  def onSubmit(departureId: DepartureId, mode: Mode): Action[AnyContent] = (identify andThen checkCancellationStatus(departureId) andThen getData(departureId) andThen requireData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
@@ -63,7 +64,8 @@ class $className$Controller @Inject()(
           val json = Json.obj(
             "form" -> formWithErrors,
             "mode" -> mode,
-            "lrn"  -> lrn,
+            "lrn"  -> request.lrn,
+            "departureId" -> departureId,
             "date" -> viewModel
           )
 
@@ -71,9 +73,9 @@ class $className$Controller @Inject()(
         },
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set($className$Page, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set($className$Page(departureId), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage($className$Page, mode, updatedAnswers))
+          } yield Redirect(navigator.nextPage($className$Page(departureId), mode, updatedAnswers, departureId))
       )
   }
 }
