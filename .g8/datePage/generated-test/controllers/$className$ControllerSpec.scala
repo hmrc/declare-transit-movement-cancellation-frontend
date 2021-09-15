@@ -8,7 +8,6 @@ import forms.$className$FormProvider
 import matchers.JsonMatchers
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import navigation.annotations.$navRoute$
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{times, verify, when}
@@ -32,16 +31,18 @@ class $className$ControllerSpec extends SpecBase with MockNunjucksRendererApp wi
   private def form = formProvider()
   private val template = "$className;format="decap"$.njk"
 
+  private val mockFrontendAppConfig = mock[FrontendAppConfig]
+
   override def guiceApplicationBuilder(): GuiceApplicationBuilder =
     super
       .guiceApplicationBuilder()
-      .overrides(bind(classOf[Navigator]).qualifiedWith(classOf[$navRoute$]).toInstance(new FakeNavigator(onwardRoute)))
+      .overrides(bind(classOf[Navigator]).toInstance(new FakeNavigator(onwardRoute, mockFrontendAppConfig)))
 
   def onwardRoute = Call("GET", "/foo")
 
   val validAnswer = LocalDate.now(ZoneOffset.UTC)
 
-  lazy val $className;format="decap"$Route = routes.$className$Controller.onPageLoad(lrn, NormalMode).url
+  lazy val $className;format="decap"$Route = routes.$className$Controller.onPageLoad(departureId, NormalMode).url
 
   def getRequest(): FakeRequest[AnyContentAsEmpty.type] =
     FakeRequest(GET, $className;format="decap"$Route)
@@ -75,7 +76,8 @@ class $className$ControllerSpec extends SpecBase with MockNunjucksRendererApp wi
       val expectedJson = Json.obj(
         "form" -> form,
         "mode" -> NormalMode,
-        "lrn"  -> lrn,
+        "lrn"  -> LocalReferenceNumber(""),
+        "departureId" -> departureId,
         "date" -> viewModel
       )
 
@@ -116,7 +118,8 @@ class $className$ControllerSpec extends SpecBase with MockNunjucksRendererApp wi
       val expectedJson = Json.obj(
         "form" -> filledForm,
         "mode" -> NormalMode,
-        "lrn"  -> lrn,
+        "lrn"  -> LocalReferenceNumber(""),
+        "departureId" -> departureId,
         "date" -> viewModel
       )
 
@@ -162,7 +165,8 @@ class $className$ControllerSpec extends SpecBase with MockNunjucksRendererApp wi
       val expectedJson = Json.obj(
         "form" -> boundForm,
         "mode" -> NormalMode,
-        "lrn"  -> lrn,
+        "lrn"  -> LocalReferenceNumber(""),
+        "departureId" -> departureId,
         "date" -> viewModel
       )
 
