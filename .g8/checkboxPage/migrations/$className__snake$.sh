@@ -6,11 +6,11 @@ echo "Applying migration $className;format="snake"$"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /:lrn/$className;format="decap"$                        controllers.$className$Controller.onPageLoad(lrn: LocalReferenceNumber, mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /:lrn/$className;format="decap"$                        controllers.$className$Controller.onSubmit(lrn: LocalReferenceNumber, mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /:departureId/$className;format="decap"$                        controllers.$className$Controller.onPageLoad(departureId: DepartureId, mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /:departureId/$className;format="decap"$                        controllers.$className$Controller.onSubmit(departureId: DepartureId, mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /:lrn/change$className$                  controllers.$className$Controller.onPageLoad(lrn: LocalReferenceNumber, mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /:lrn/change$className$                  controllers.$className$Controller.onSubmit(lrn: LocalReferenceNumber, mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /:departureId/change$className$                  controllers.$className$Controller.onPageLoad(departureId: DepartureId, mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /:departureId/change$className$                  controllers.$className$Controller.onSubmit(departureId: DepartureId, mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en
@@ -62,7 +62,7 @@ awk '/class CheckYourAnswersHelper/ {\
      print "        actions = List(";\
      print "          Action(";\
      print "            content            = msg\"site.edit\",";\
-     print "            href               = routes.$className$Controller.onPageLoad(lrn, CheckMode).url,";\
+     print "            href               = routes.$className$Controller.onPageLoad(departureId, CheckMode).url,";\
      print "            visuallyHiddenText = Some(msg\"site.edit.hidden\".withArgs(msg\"$className;format="decap"$.checkYourAnswersLabel\"))";\
      print "          )";\
      print "        )";\

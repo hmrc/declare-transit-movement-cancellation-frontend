@@ -4,7 +4,7 @@ import base.SpecBase
 import base.MockNunjucksRendererApp
 import forms.$className$FormProvider
 import matchers.JsonMatchers
-import models.{NormalMode, $className$, LocalReferenceNumber, UserAnswers}
+import models.{NormalMode, $className$, LocalReferenceNumber, UserAnswers, DepartureId}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.any
