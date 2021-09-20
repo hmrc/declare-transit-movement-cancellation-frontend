@@ -20,6 +20,8 @@
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
 
+        <span class="govuk-caption-xl">{{lrn}}</span>
+
         {% if form.errors.length > 0 %}
           {{ govukErrorSummary({
             "titleText": messages("error.summary.title"),
@@ -27,11 +29,13 @@
           }) }}
         {% endif %}
 
-        <form action="{{ routes.controllers.$className$Controller.onSubmit(lrn, mode).url }}" method="post">
+        <form action="{{ routes.controllers.$className$Controller.onSubmit(departureId, mode).url }}" method="post">
 
           {{ csrf() | safe }}
 
           {{ govukRadios({
+            idPrefix: messages('$className;format="decap"$.heading'),
+            classes: "govuk-radios--inline",
             name: 'value',
             fieldset: {
               legend: {

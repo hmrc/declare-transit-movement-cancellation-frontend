@@ -6,9 +6,7 @@ import base.SpecBase
 import base.MockNunjucksRendererApp
 import forms.$className$FormProvider
 import matchers.JsonMatchers
-import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import navigation.annotations.$navRoute$
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{times, verify, when}
@@ -23,6 +21,8 @@ import play.api.test.Helpers._
 import play.twirl.api.Html
 import repositories.SessionRepository
 import uk.gov.hmrc.viewmodels.{DateInput, NunjucksSupport}
+import config.FrontendAppConfig
+import models.{LocalReferenceNumber, NormalMode, UserAnswers}
 
 import scala.concurrent.Future
 
@@ -32,16 +32,18 @@ class $className$ControllerSpec extends SpecBase with MockNunjucksRendererApp wi
   private def form = formProvider()
   private val template = "$className;format="decap"$.njk"
 
+  private val mockFrontendAppConfig = mock[FrontendAppConfig]
+
   override def guiceApplicationBuilder(): GuiceApplicationBuilder =
     super
       .guiceApplicationBuilder()
-      .overrides(bind(classOf[Navigator]).qualifiedWith(classOf[$navRoute$]).toInstance(new FakeNavigator(onwardRoute)))
+      .overrides(bind(classOf[Navigator]).toInstance(new FakeNavigator(onwardRoute, mockFrontendAppConfig)))
 
   def onwardRoute = Call("GET", "/foo")
 
   val validAnswer = LocalDate.now(ZoneOffset.UTC)
 
-  lazy val $className;format="decap"$Route = routes.$className$Controller.onPageLoad(lrn, NormalMode).url
+  lazy val $className;format="decap"$Route = routes.$className$Controller.onPageLoad(departureId, NormalMode).url
 
   def getRequest(): FakeRequest[AnyContentAsEmpty.type] =
     FakeRequest(GET, $className;format="decap"$Route)
@@ -57,6 +59,8 @@ class $className$ControllerSpec extends SpecBase with MockNunjucksRendererApp wi
   "$className$ Controller" - {
 
     "must return OK and the correct view for a GET" in {
+      checkCancellationStatus()
+
       dataRetrievalWithData(emptyUserAnswers)
       when(mockRenderer.render(any(), any())(any()))
         .thenReturn(Future.successful(Html("")))
@@ -75,7 +79,8 @@ class $className$ControllerSpec extends SpecBase with MockNunjucksRendererApp wi
       val expectedJson = Json.obj(
         "form" -> form,
         "mode" -> NormalMode,
-        "lrn"  -> lrn,
+        "lrn"  -> LocalReferenceNumber(""),
+        "departureId" -> departureId,
         "date" -> viewModel
       )
 
@@ -87,11 +92,12 @@ class $className$ControllerSpec extends SpecBase with MockNunjucksRendererApp wi
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
+      checkCancellationStatus()
 
       when(mockRenderer.render(any(), any())(any()))
         .thenReturn(Future.successful(Html("")))
 
-      val userAnswers = emptyUserAnswers.set($className$Page, validAnswer).success.value
+      val userAnswers = emptyUserAnswers.set($className$Page(departureId), validAnswer).success.value
       dataRetrievalWithData(userAnswers)
 
       val templateCaptor = ArgumentCaptor.forClass(classOf[String])
@@ -116,7 +122,8 @@ class $className$ControllerSpec extends SpecBase with MockNunjucksRendererApp wi
       val expectedJson = Json.obj(
         "form" -> filledForm,
         "mode" -> NormalMode,
-        "lrn"  -> lrn,
+        "lrn"  -> LocalReferenceNumber(""),
+        "departureId" -> departureId,
         "date" -> viewModel
       )
 
@@ -128,6 +135,8 @@ class $className$ControllerSpec extends SpecBase with MockNunjucksRendererApp wi
     }
 
     "must redirect to the next page when valid data is submitted" in {
+      checkCancellationStatus()
+
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
       dataRetrievalWithData(emptyUserAnswers)
 
@@ -140,6 +149,7 @@ class $className$ControllerSpec extends SpecBase with MockNunjucksRendererApp wi
     }
 
     "must return a Bad Request and errors when invalid data is submitted" in {
+      checkCancellationStatus()
 
       when(mockRenderer.render(any(), any())(any()))
         .thenReturn(Future.successful(Html("")))
@@ -162,7 +172,8 @@ class $className$ControllerSpec extends SpecBase with MockNunjucksRendererApp wi
       val expectedJson = Json.obj(
         "form" -> boundForm,
         "mode" -> NormalMode,
-        "lrn"  -> lrn,
+        "lrn"  -> LocalReferenceNumber(""),
+        "departureId" -> departureId,
         "date" -> viewModel
       )
 
@@ -174,6 +185,7 @@ class $className$ControllerSpec extends SpecBase with MockNunjucksRendererApp wi
     }
 
     "must redirect to Session Expired for a GET if no existing data is found" in {
+      checkCancellationStatus()
 
       dataRetrievalNoData()
 
@@ -185,6 +197,7 @@ class $className$ControllerSpec extends SpecBase with MockNunjucksRendererApp wi
     }
 
     "must redirect to Session Expired for a POST if no existing data is found" in {
+      checkCancellationStatus()
 
       dataRetrievalNoData()
 
