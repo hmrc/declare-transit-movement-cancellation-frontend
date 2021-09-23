@@ -68,7 +68,8 @@ class ConfirmCancellationControllerSpec extends SpecBase with NunjucksSupport wi
         "form"        -> form,
         "lrn"         -> LocalReferenceNumber(""),
         "departureId" -> departureId,
-        "radios"      -> Radios.yesNo(form("value"))
+        "radios"      -> Radios.yesNo(form("value")),
+        "onSubmitUrl" -> routes.ConfirmCancellationController.onSubmit(departureId).url
       )
 
       templateCaptor.getValue mustEqual template
@@ -163,7 +164,8 @@ class ConfirmCancellationControllerSpec extends SpecBase with NunjucksSupport wi
         "form"        -> boundForm,
         "lrn"         -> LocalReferenceNumber(""),
         "departureId" -> departureId,
-        "radios"      -> Radios.yesNo(boundForm("value"))
+        "radios"      -> Radios.yesNo(boundForm("value")),
+        "onSubmitUrl" -> routes.ConfirmCancellationController.onSubmit(departureId).url
       )
 
       val jsonWithoutConfig = jsonCaptor.getValue - configKey

@@ -59,7 +59,8 @@ class CancellationReasonController @Inject()(
         val json = Json.obj(
           "form"        -> form,
           "lrn"         -> request.lrn,
-          "departureId" -> departureId
+          "departureId" -> departureId,
+          "onSubmitUrl" -> routes.CancellationReasonController.onSubmit(departureId).url
         )
         renderer.render(template, json).map(Ok(_))
     }
@@ -75,7 +76,8 @@ class CancellationReasonController @Inject()(
               val json = Json.obj(
                 "form"        -> formWithErrors,
                 "lrn"         -> request.lrn,
-                "departureId" -> departureId
+                "departureId" -> departureId,
+                "onSubmitUrl" -> routes.CancellationReasonController.onSubmit(departureId).url
               )
               renderer.render(template, json).map(BadRequest(_))
             },
