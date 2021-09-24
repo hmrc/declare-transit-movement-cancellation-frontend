@@ -57,7 +57,8 @@ class ConfirmCancellationController @Inject()(
           "form"        -> form,
           "lrn"         -> request.lrn,
           "departureId" -> departureId,
-          "radios"      -> Radios.yesNo(form("value"))
+          "radios"      -> Radios.yesNo(form("value")),
+          "onSubmitUrl" -> routes.ConfirmCancellationController.onSubmit(departureId).url
         )
 
         renderer.render(template, json).map(Ok(_))
@@ -75,7 +76,8 @@ class ConfirmCancellationController @Inject()(
                 "form"        -> formWithErrors,
                 "lrn"         -> request.lrn,
                 "departureId" -> departureId,
-                "radios"      -> Radios.yesNo(formWithErrors("value"))
+                "radios"      -> Radios.yesNo(formWithErrors("value")),
+                "onSubmitUrl" -> routes.ConfirmCancellationController.onSubmit(departureId).url
               )
               renderer.render(template, json).map(BadRequest(_))
             },
