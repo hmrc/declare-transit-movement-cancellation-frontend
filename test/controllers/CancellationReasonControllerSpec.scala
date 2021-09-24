@@ -69,14 +69,13 @@ class CancellationReasonControllerSpec extends SpecBase with MockNunjucksRendere
       val expectedJson = Json.obj(
         "form"        -> form,
         "lrn"         -> LocalReferenceNumber(""),
-        "departureId" -> departureId
+        "departureId" -> departureId,
+        "onSubmitUrl" -> routes.CancellationReasonController.onSubmit(departureId).url
       )
-
       val jsonWithoutConfig = jsonCaptor.getValue - configKey
 
       templateCaptor.getValue mustEqual template
-      jsonWithoutConfig must containJson(expectedJson)
-
+      jsonWithoutConfig mustBe expectedJson
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
@@ -178,11 +177,14 @@ class CancellationReasonControllerSpec extends SpecBase with MockNunjucksRendere
       val expectedJson = Json.obj(
         "form"        -> boundForm,
         "departureId" -> departureId,
-        "lrn"         -> LocalReferenceNumber("")
+        "lrn"         -> LocalReferenceNumber(""),
+        "onSubmitUrl" -> routes.CancellationReasonController.onSubmit(departureId).url
       )
 
+      val jsonWithoutConfig = jsonCaptor.getValue - configKey
+
       templateCaptor.getValue mustEqual template
-      jsonCaptor.getValue must containJson(expectedJson)
+      jsonWithoutConfig mustBe expectedJson
 
     }
   }
