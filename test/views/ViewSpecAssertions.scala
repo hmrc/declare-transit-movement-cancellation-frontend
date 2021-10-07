@@ -17,6 +17,7 @@
 package views
 
 import org.jsoup.nodes.{Document, Element}
+import org.scalatest.Assertion
 import org.scalatest.matchers.must.Matchers
 import play.api.i18n.Messages
 
@@ -107,4 +108,17 @@ trait ViewSpecAssertions extends Matchers {
 
   def assertPageHasNoLink(doc: Document, id: String) =
     doc.select(s"a[id=$id]").isEmpty mustBe true
+
+  def assertAttributeValueForElement(element: Element, attribute: String, attributeValue: String): Assertion = {
+    assert(element.attr(attribute) == attributeValue)
+  }
+
+  def assertPageHasButtonWithHref(doc: Document, id : String,url : String): Unit = {
+    val element = doc.getElementById(id)
+    assertAttributeValueForElement(
+      element,
+      "href",
+      url
+    )
+  }
 }

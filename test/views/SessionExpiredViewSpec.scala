@@ -50,6 +50,14 @@ class SessionExpiredViewSpec extends SingleViewSpec("session-expired.njk") {
       )
       assertPageHasNoLink(doc, "nav-sign-in")
     }
+
+    "must have a Sign In button with the correct href" in {
+      val doc: Document = renderDocument(
+        Json.obj("signInUrl" -> "/manage-transit-movements/what-do-you-want-to-do")
+      ).futureValue
+
+      assertPageHasButtonWithHref(doc, "submit", "/manage-transit-movements/what-do-you-want-to-do")
+    }
   }
 
 }
