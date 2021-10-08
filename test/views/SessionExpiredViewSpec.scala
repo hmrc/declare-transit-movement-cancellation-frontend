@@ -16,4 +16,17 @@
 
 package views
 
-class SessionExpiredViewSpec extends SingleViewSpec("session-expired.njk", hasSignOutLink = false)
+import org.jsoup.nodes.Document
+import play.api.libs.json.Json
+
+class SessionExpiredViewSpec extends SingleViewSpec("session-expired.njk", hasSignOutLink = false) {
+
+  "must have a Sign In button with the correct href" in {
+    val doc: Document = renderDocument(
+      Json.obj("signInUrl" -> "/manage-transit-movements/what-do-you-want-to-do")
+    ).futureValue
+
+    assertPageHasButtonWithHref(doc, "submit", "/manage-transit-movements/what-do-you-want-to-do")
+  }
+  
+}
