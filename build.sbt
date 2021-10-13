@@ -14,12 +14,13 @@ lazy val root = (project in file("."))
     SbtDistributablesPlugin
   )
   .disablePlugins(JUnitXmlReportPlugin) //Required to prevent https://github.com/scalatest/scalatest/issues/1427
+  .configs(IntegrationTest)
+  .settings(inConfig(IntegrationTest)(itSettings): _*)
   .settings(DefaultBuildSettings.scalaSettings: _*)
   .settings(DefaultBuildSettings.defaultSettings(): _*)
   .settings(SbtDistributablesPlugin.publishingSettings: _*)
   .settings(inConfig(Test)(testSettings): _*)
   .settings(majorVersion := 0)
-  .settings(useSuperShell in ThisBuild := false)
   .settings(
     scalaVersion := "2.12.12",
     name := appName,
@@ -50,7 +51,7 @@ lazy val root = (project in file("."))
     ),
     Concat.groups := Seq(
       "javascripts/application.js" -> group(Seq("lib/govuk-frontend/govuk/all.js", "lib/hmrc-frontend/hmrc/all.js", "javascripts/ctc.js"))
-                         ),
+    ),
     uglifyCompressOptions := Seq("unused=false", "dead_code=false", "warnings=false"),
     pipelineStages in Assets := Seq(concat, uglify)
   )
@@ -76,5 +77,18 @@ lazy val testSettings: Seq[Def.Setting[_]] = Seq(
   javaOptions ++= Seq(
     "-Dconfig.resource=test.application.conf",
     "-Dconfig.logger=logback-test.xml"
+  )
+)
+
+lazy val itSettings = Defaults.itSettings ++ Seq(
+  unmanagedSourceDirectories := Seq(
+    baseDirectory.value / "it"
+  ),
+  unmanagedResourceDirectories += baseDirectory.value / "it" / "resources",
+  parallelExecution := false,
+  fork              := true,
+  javaOptions ++= Seq(
+    "-Dconfig.resource=it.application.conf",
+    "-Dlogger.resource=logback-it.xml"
   )
 )
