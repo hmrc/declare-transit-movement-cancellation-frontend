@@ -7,8 +7,6 @@ GET        /this-service-has-been-reset                             controllers.
 
 GET        /unauthorised                                            controllers.UnauthorisedController.onPageLoad()
 
-GET        /accessibility-statement                                 controllers.AccessibilityController.onPageLoad()
-
 GET        /:departureId/confirm-cancellation                       controllers.ConfirmCancellationController.onPageLoad(departureId: DepartureId, mode: Mode = NormalMode)
 POST       /:departureId/confirm-cancellation                       controllers.ConfirmCancellationController.onSubmit(departureId: DepartureId, mode: Mode = NormalMode)
 
