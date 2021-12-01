@@ -26,12 +26,14 @@
             "errorList": form.errors
           }) }}
         {% endif %}
+
         <span class="govuk-caption-xl">{{lrn}}</span>
         <form action="{{ onSubmitUrl }}" method="post">
 
           {{ csrf() | safe }}
 
           {{ govukRadios({
+            classes: "govuk-radios--inline",
             name: 'value',
             fieldset: {
               legend: {
@@ -46,7 +48,7 @@
 
           {{ govukButton({
             text: messages("site.continue"),
-            attributes: {id:"submit"}
+            attributes: {id: "submit"}
           }) }}
 
         </form>
