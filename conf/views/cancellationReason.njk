@@ -33,17 +33,18 @@
 
           {{ csrf() | safe }}
 
-               {{ govukCharacterCount({
-                              name: "value",
-                              id: "value",
-                              maxlength: 350,
-                              value: form.value.value,
-                              label: {
-                                text: messages('cancellationReason.heading'),
-                                classes: "govuk-label--xl",
-                                isPageHeading: true
-                              }
-                        }) }}
+           {{ govukCharacterCount({
+                  name: "value",
+                  id: "value",
+                  maxlength: 350,
+                  value: form.value.value,
+                  errorMessage: form.value.error,
+                  label: {
+                    text: messages('cancellationReason.heading'),
+                    classes: "govuk-label--xl",
+                    isPageHeading: true
+                  }
+            }) }}
 
           {{ govukButton({
             text: messages("site.submit"),
