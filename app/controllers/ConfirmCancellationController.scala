@@ -28,7 +28,7 @@ import renderer.Renderer
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.viewmodels.{NunjucksSupport, Radios}
-
+import views.html.ConfirmCancellation
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -41,7 +41,8 @@ class ConfirmCancellationController @Inject()(
   navigator: Navigator,
   getData: DataRetrievalActionProvider,
   val controllerComponents: MessagesControllerComponents,
-  renderer: Renderer
+  renderer: Renderer,
+  view: ConfirmCancellation
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport
@@ -61,7 +62,7 @@ class ConfirmCancellationController @Inject()(
           "onSubmitUrl" -> routes.ConfirmCancellationController.onSubmit(departureId).url
         )
 
-        renderer.render(template, json).map(Ok(_))
+        Future.successful(Ok(view()))
     }
 
   def onSubmit(departureId: DepartureId, mode: Mode): Action[AnyContent] =
