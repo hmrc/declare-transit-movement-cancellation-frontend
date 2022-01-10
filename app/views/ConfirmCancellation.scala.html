@@ -14,14 +14,36 @@
  * limitations under the License.
  *@
 
+@import views.html.components.{Button, InputYesNo, ErrorSummary}
+@import controllers.routes._
+@import models.{DepartureId, LocalReferenceNumber}
+
 @this(
-mainTemplate: MainTemplate
+ mainTemplate: MainTemplate,
+ formHelper: FormWithCSRF,
+ button: Button,
+ yesNo: InputYesNo,
+ errorSummary: ErrorSummary
 )
 
-@()(implicit request: Request[_], messages: Messages)
+@(form: Form[Boolean], departureId: DepartureId, lrn: LocalReferenceNumber)(implicit request: Request[_], messages: Messages)
 
 @mainTemplate(
-    title = "Confirm cancellation"
+    title = messages("confirmCancellation.title"),
+    showBackLink = true
 ) {
-    <h1>Confirm cancellation page</h1>
+
+ @formHelper(action = routes.ConfirmCancellationController.onSubmit(departureId), 'autoComplete -> "off") {
+
+ @errorSummary(form.errors)
+
+  @yesNo(
+    field = form("value"),
+    legend = messages("confirmCancellation.heading"),
+    caption = Some(lrn.value)
+  )
+
+  @button(attributes = Map("id" -> "submit"))
+
+ }
 }

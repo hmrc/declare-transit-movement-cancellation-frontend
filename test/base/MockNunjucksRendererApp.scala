@@ -40,6 +40,7 @@ import scala.concurrent.{ExecutionContext, Future}
 trait MockNunjucksRendererApp extends GuiceOneAppPerSuite with BeforeAndAfterEach with MockitoSugar {
   self: TestSuite =>
 
+  @deprecated("No longer dependent on renderer", since = "10/02/22")
   val mockRenderer: NunjucksRenderer = mock[NunjucksRenderer]
 
   val mockSubmissionService: CancellationSubmissionService = mock[CancellationSubmissionService]
@@ -63,7 +64,7 @@ trait MockNunjucksRendererApp extends GuiceOneAppPerSuite with BeforeAndAfterEac
   def dataRetrievalWithData(userAnswers: UserAnswers): Unit = {
     val fakeDataRetrievalAction = new ActionTransformer[AuthorisedRequest, OptionalDataRequest] {
       override protected def transform[A](request: AuthorisedRequest[A]): Future[OptionalDataRequest[A]] =
-        Future.successful(OptionalDataRequest(request.request, request.eoriNumber, LocalReferenceNumber(""), Some(userAnswers)))
+        Future.successful(OptionalDataRequest(request.request, request.eoriNumber, LocalReferenceNumber("lrn"), Some(userAnswers)))
 
       override protected def executionContext: ExecutionContext = scala.concurrent.ExecutionContext.global
     }
@@ -74,7 +75,7 @@ trait MockNunjucksRendererApp extends GuiceOneAppPerSuite with BeforeAndAfterEac
   def dataRetrievalNoData(): Unit = {
     val fakeDataRetrievalAction = new ActionTransformer[AuthorisedRequest, OptionalDataRequest] {
       override protected def transform[A](request: AuthorisedRequest[A]): Future[OptionalDataRequest[A]] =
-        Future.successful(OptionalDataRequest(request.request, request.eoriNumber, LocalReferenceNumber(""), None))
+        Future.successful(OptionalDataRequest(request.request, request.eoriNumber, LocalReferenceNumber("lrn"), None))
 
       override protected def executionContext: ExecutionContext = scala.concurrent.ExecutionContext.global
     }
@@ -85,7 +86,7 @@ trait MockNunjucksRendererApp extends GuiceOneAppPerSuite with BeforeAndAfterEac
   def checkCancellationStatus(): Unit = {
     val fakeCancellationStatusAction = new ActionRefiner[IdentifierRequest, AuthorisedRequest] {
       override protected def refine[A](request: IdentifierRequest[A]): Future[Either[Result, AuthorisedRequest[A]]] =
-        Future.successful(Right(AuthorisedRequest(request.request, request.eoriNumber, LocalReferenceNumber(""))))
+        Future.successful(Right(AuthorisedRequest(request.request, request.eoriNumber, LocalReferenceNumber("lrn"))))
 
       override protected def executionContext: ExecutionContext = scala.concurrent.ExecutionContext.global
     }

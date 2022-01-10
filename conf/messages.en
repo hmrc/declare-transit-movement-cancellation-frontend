@@ -4,6 +4,8 @@ site.day.capitalized = Day
 site.month.capitalized = Month
 site.year.capitalized = Year
 
+this.section.is = The local reference number is
+
 site.back = Back
 site.delete = Remove
 site.edit = Change

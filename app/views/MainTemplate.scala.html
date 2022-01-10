@@ -45,20 +45,24 @@
 )(mainContent: Html)(implicit request: Request[_], messages: Messages)
 
 @headScripts = {
-
-@stylesheets()
+    @stylesheets()
 }
 
 @beforeContentBlock = {
-@hmrcLanguageSelectHelper()
-@if(showBackLink) {
-    @govukBackLink(BackLink(
-        attributes = Map("id" -> "back-link"), classes="js-enabled", href="javascript:history.back()", content = HtmlContent(messages("site.back"))
-    ))
-}
+
+    @if(showBackLink) {
+        @govukBackLink(
+            BackLink(
+                attributes = Map("id" -> "back-link"),
+                classes = "js-enabled",
+                href = "javascript:history.back()",
+                content = HtmlContent(messages("site.back"))
+            )
+        )
+    }
 }
 
-    @mainContentWithGetHelp = {
+@mainContentWithGetHelp = {
     @mainContent
     @hmrcReportTechnicalIssueHelper()
 }

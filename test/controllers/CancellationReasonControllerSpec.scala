@@ -68,7 +68,7 @@ class CancellationReasonControllerSpec extends SpecBase with MockNunjucksRendere
 
       val expectedJson = Json.obj(
         "form"        -> form,
-        "lrn"         -> LocalReferenceNumber(""),
+        "lrn"         -> LocalReferenceNumber("lrn"),
         "departureId" -> departureId,
         "onSubmitUrl" -> routes.CancellationReasonController.onSubmit(departureId).url
       )
@@ -177,7 +177,7 @@ class CancellationReasonControllerSpec extends SpecBase with MockNunjucksRendere
       val expectedJson = Json.obj(
         "form"        -> boundForm,
         "departureId" -> departureId,
-        "lrn"         -> LocalReferenceNumber(""),
+        "lrn"         -> LocalReferenceNumber("lrn"),
         "onSubmitUrl" -> routes.CancellationReasonController.onSubmit(departureId).url
       )
 
