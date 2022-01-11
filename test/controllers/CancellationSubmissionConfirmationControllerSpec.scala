@@ -52,9 +52,6 @@ class CancellationSubmissionConfirmationControllerSpec extends SpecBase with Moc
 
       val mockConnector = mock[DepartureMovementConnector]
 
-      when(mockRenderer.render(any(), any())(any()))
-        .thenReturn(Future.successful(Html("")))
-
       when(mockConnector.getDeparture(any())(any()))
         .thenReturn(Future.successful(Some(mockDepartureResponse)))
 
@@ -62,19 +59,9 @@ class CancellationSubmissionConfirmationControllerSpec extends SpecBase with Moc
 
       val request = FakeRequest(GET, routes.CancellationSubmissionConfirmationController.onPageLoad(departureId).url)
 
-      val templateCaptor = ArgumentCaptor.forClass(classOf[String])
-      val jsonCaptor     = ArgumentCaptor.forClass(classOf[JsObject])
-
       val result = route(application, request).value
 
       status(result) mustEqual OK
-
-      verify(mockRenderer, times(1)).render(templateCaptor.capture(), jsonCaptor.capture())(any())
-
-      val expectedJson = Json.obj()
-
-      templateCaptor.getValue mustEqual "cancellationSubmissionConfirmation.njk"
-      jsonCaptor.getValue must containJson(expectedJson)
 
       application.stop()
 

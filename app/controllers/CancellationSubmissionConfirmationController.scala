@@ -26,9 +26,10 @@ import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import renderer.Renderer
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import views.html.CancellationSubmissionConfirmation
 
 import javax.inject.Inject
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 class CancellationSubmissionConfirmationController @Inject()(
   override val messagesApi: MessagesApi,
@@ -36,7 +37,8 @@ class CancellationSubmissionConfirmationController @Inject()(
   departureMovementConnector: DepartureMovementConnector,
   val controllerComponents: MessagesControllerComponents,
   appConfig: FrontendAppConfig,
-  renderer: Renderer
+  renderer: Renderer,
+  view: CancellationSubmissionConfirmation
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
@@ -45,11 +47,9 @@ class CancellationSubmissionConfirmationController @Inject()(
     implicit request =>
       departureMovementConnector.getDeparture(departureId).flatMap {
         case Some(responseDeparture: ResponseDeparture) =>
-          val json = Json.obj(
-            "lrn"           -> responseDeparture.localReferenceNumber,
-            "departureList" -> s"${appConfig.manageTransitMovementsViewDeparturesUrl}"
-          )
-          renderer.render("cancellationSubmissionConfirmation.njk", json).map(Ok(_))
+          val departureListUrl = s"${appConfig.manageTransitMovementsViewDeparturesUrl}"
+
+          Future.successful(Ok(view(departureListUrl, responseDeparture.localReferenceNumber)))
         case None =>
           val json = Json.obj(
             "departureId" -> departureId
