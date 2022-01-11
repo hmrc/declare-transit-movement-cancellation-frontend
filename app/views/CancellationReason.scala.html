@@ -40,7 +40,8 @@
  @inputCharacterCount(
      field = form("value"),
      label = messages("cancellationReason.title"),
-     maxLength = Some(maxLength)
+     maxLength = Some(maxLength),
+     caption = Some(lrn.value)
  )
 
   @button(attributes = Map("id" -> "submit"))

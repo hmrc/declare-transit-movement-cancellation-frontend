@@ -17,7 +17,8 @@
 package views
 
 import play.api.i18n.Messages
-import uk.gov.hmrc.govukfrontend.views.implicits.{RichRadiosSupport, RichTextareaSupport}
+import uk.gov.hmrc.govukfrontend.views.implicits.{RichCharacterCountSupport, RichRadiosSupport, RichTextareaSupport}
+import uk.gov.hmrc.govukfrontend.views.viewmodels.charactercount.CharacterCount
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.Radios
 import uk.gov.hmrc.govukfrontend.views.viewmodels.textarea.Textarea
@@ -44,6 +45,17 @@ object ViewUtils {
       caption match {
         case Some(value) => textArea.withHeadingAndSectionCaption(Text(heading), Text(value))
         case None        => textArea.withHeading(Text(heading))
+      }
+    }
+  }
+
+  implicit class InputCharacterCountImplicits(characterCount: CharacterCount)(implicit messages: Messages) extends RichCharacterCountSupport {
+
+    def withHeadingAndCaption(heading: String, caption: Option[String]): CharacterCount = {
+
+      caption match {
+        case Some(value) => characterCount.withHeadingAndSectionCaption(Text(heading), Text(value))
+        case None        => characterCount.withHeading(Text(heading))
       }
     }
   }
