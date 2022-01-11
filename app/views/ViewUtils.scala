@@ -17,11 +17,14 @@
 package views
 
 import play.api.i18n.Messages
-import uk.gov.hmrc.govukfrontend.views.implicits.RichRadiosSupport
+import uk.gov.hmrc.govukfrontend.views.implicits.{RichRadiosSupport, RichTextareaSupport}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.Radios
+import uk.gov.hmrc.govukfrontend.views.viewmodels.textarea.Textarea
 
 object ViewUtils {
+
+  // TODO refactor this maybe? Going to need this for every ViewModel type going forward
 
   implicit class RadioImplicits(radios: Radios)(implicit messages: Messages) extends RichRadiosSupport {
 
@@ -29,10 +32,20 @@ object ViewUtils {
 
       caption match {
         case Some(value) => radios.withHeadingAndSectionCaption(Text(heading), Text(value))
-        case None => radios.withHeading(Text(heading))
+        case None        => radios.withHeading(Text(heading))
       }
     }
+  }
 
+  implicit class TextAreaImplicits(textArea: Textarea)(implicit messages: Messages) extends RichTextareaSupport {
+
+    def withHeadingAndCaption(heading: String, caption: Option[String]): Textarea = {
+
+      caption match {
+        case Some(value) => textArea.withHeadingAndSectionCaption(Text(heading), Text(value))
+        case None        => textArea.withHeading(Text(heading))
+      }
+    }
   }
 
 }

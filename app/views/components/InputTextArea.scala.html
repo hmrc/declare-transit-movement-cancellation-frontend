@@ -14,14 +14,15 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.govukfrontend.views.Implicits._
-@import uk.gov.hmrc.govukfrontend.views.html.components._
+@import uk.gov.hmrc.govukfrontend.views.html.components.implicits._
+@import views.ViewUtils._
 
 @this(govukTextarea: GovukTextarea)
 
 @(
         field: Field,
         label: String,
+        caption: Option[String] = None,
         labelAsHeading: Boolean = false,
         inputClass: Option[String] = None,
         labelClass: Option[String] = None,
@@ -29,20 +30,25 @@
         rows: Int = 5
 )(implicit messages: Messages)
 
-@govukTextarea(Textarea(
-    id = field.id,
-    name = field.id,
-    label = Label(
-        isPageHeading = labelAsHeading,
-        classes = labelClass.getOrElse("govuk-label--l"),
-        content = Text(label)
-    ),
-    hint = hint.map(hint => Hint(content = Text(hint))),
-    rows = rows,
-    errorMessage = field.error match {
-        case Some(e) => Some(ErrorMessage.errorMessageWithDefaultStringsTranslated(content = Text(messages(e.message, e.args: _*))))
-        case None => None
-    },
-    value = field.value,
-    classes = if(inputClass.isDefined) inputClass.get else ""
-).withFormField(field))
+@govukTextarea(
+    Textarea(
+        id = field.id,
+        name = field.id,
+        label = Label(
+            isPageHeading = labelAsHeading,
+            classes = labelClass.getOrElse("govuk-label--l"),
+            content = Text(label)
+        ),
+        hint = hint.map(hint => Hint(content = Text(hint))),
+        rows = rows,
+        errorMessage = field.error match {
+            case Some(e) => Some(ErrorMessage.errorMessageWithDefaultStringsTranslated(content = Text(messages(e.message, e.args: _*))))
+            case None => None
+        },
+        value = field.value,
+        classes = if(inputClass.isDefined) inputClass.get else ""
+    )
+    .withFormField(field)
+    .withHeadingAndCaption(label, caption)
+
+)

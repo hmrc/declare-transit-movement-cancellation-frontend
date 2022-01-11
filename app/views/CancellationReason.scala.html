@@ -38,7 +38,8 @@
 
   @inputTextArea(
     field = form("value"),
-    label = messages("cancellationReason.title")
+    label = messages("cancellationReason.title"),
+    caption = Some(lrn.value)
   )
 
   @button(attributes = Map("id" -> "submit"))
