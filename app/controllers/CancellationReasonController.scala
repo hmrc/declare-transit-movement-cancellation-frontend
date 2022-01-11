@@ -69,13 +69,7 @@ class CancellationReasonController @Inject()(
           .bindFromRequest()
           .fold(
             formWithErrors => {
-              val json = Json.obj(
-                "form"        -> formWithErrors,
-                "lrn"         -> request.lrn,
-                "departureId" -> departureId,
-                "onSubmitUrl" -> routes.CancellationReasonController.onSubmit(departureId).url
-              )
-              renderer.render(template, json).map(BadRequest(_))
+              Future.successful(BadRequest(view(formWithErrors, departureId, request.lrn)))
             },
             value => {
               Future
@@ -84,6 +78,9 @@ class CancellationReasonController @Inject()(
                   cancellationSubmissionService.submitCancellation(updatedAnswers).flatMap {
                     case Right(_) => Future.successful(Redirect(navigator.nextPage(CancellationReasonPage(departureId), mode, updatedAnswers, departureId)))
                     case Left(_) => {
+
+                      // TODO twirl techdiff template
+
                       val json = Json.obj(
                         "contactUrl" -> appConfig.nctsEnquiriesUrl
                       )
