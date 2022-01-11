@@ -33,9 +33,6 @@ class SessionExpiredControllerSpec extends SpecBase with MockNunjucksRendererApp
 
     "must return OK and the correct view for a GET" in {
 
-      when(mockRenderer.render(any(), any())(any()))
-        .thenReturn(Future.successful(Html("")))
-
       val application = applicationBuilder(userAnswers = None).build()
 
       val request = FakeRequest(GET, routes.SessionExpiredController.onPageLoad().url)
@@ -43,18 +40,6 @@ class SessionExpiredControllerSpec extends SpecBase with MockNunjucksRendererApp
       val result = route(application, request).value
 
       status(result) mustEqual OK
-
-      val templateCaptor: ArgumentCaptor[String] = ArgumentCaptor.forClass(classOf[String])
-      val jsonCaptor: ArgumentCaptor[JsObject]   = ArgumentCaptor.forClass(classOf[JsObject])
-
-      verify(mockRenderer, times(1)).render(templateCaptor.capture(), jsonCaptor.capture())(any())
-
-      val expectedJson = Json.obj(
-        "signInUrl" -> "http://localhost:9485/manage-transit-movements/what-do-you-want-to-do"
-      )
-      templateCaptor.getValue mustEqual "session-expired.njk"
-      val jsonCaptorWithoutConfig: JsObject = jsonCaptor.getValue - configKey
-      jsonCaptorWithoutConfig mustBe expectedJson
     }
   }
 }

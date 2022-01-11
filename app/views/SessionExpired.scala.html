@@ -14,21 +14,24 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.govukfrontend.views.html.components._
+@import views.html.components.{Button, Heading}
 
-@this(govukButton : GovukButton)
+@this(
+        main_template: MainTemplate,
+        heading: Heading,
+        button: Button
+)
 
-@(
-messageKey: String = "site.continue",
-isStartButton: Boolean = false,
-isPrintButton: Boolean = false,
-attributes: Map[String, String] = Map.empty,
-href: Option[String] = None
-)(implicit messages: Messages)
+@(signInUrl: String)(implicit request: Request[_], messages: Messages)
 
-@govukButton(Button(
- isStartButton = isStartButton,
- content = Text(messages(messageKey)),
- attributes = attributes,
- href = href
-))
+@main_template(
+    title = messages("session_expired.title"),
+    showBackLink = true
+) {
+
+    @heading(messages("session_expired.heading"))
+
+    <p class="govuk-body">@messages("session_expired.guidance")</p>
+
+    @button(attributes = Map("id" -> "submit"), href = Some(signInUrl))
+}
