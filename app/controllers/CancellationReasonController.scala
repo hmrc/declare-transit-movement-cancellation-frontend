@@ -29,6 +29,7 @@ import renderer.Renderer
 import services.CancellationSubmissionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.viewmodels.NunjucksSupport
+import views.html.{CancellationReason, ConfirmCancellation}
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -44,7 +45,8 @@ class CancellationReasonController @Inject()(
   cancellationSubmissionService: CancellationSubmissionService,
   val controllerComponents: MessagesControllerComponents,
   renderer: Renderer,
-  appConfig: FrontendAppConfig
+  appConfig: FrontendAppConfig,
+  view: CancellationReason
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport
@@ -53,16 +55,10 @@ class CancellationReasonController @Inject()(
   private val form     = formProvider()
   private val template = "cancellationReason.njk"
 
-  def onPageLoad(departureId: DepartureId, mode: Mode): Action[AnyContent] =
+  def onPageLoad(departureId: DepartureId): Action[AnyContent] =
     (identify andThen checkCancellationStatus(departureId) andThen getData(departureId) andThen requireData).async {
       implicit request =>
-        val json = Json.obj(
-          "form"        -> form,
-          "lrn"         -> request.lrn,
-          "departureId" -> departureId,
-          "onSubmitUrl" -> routes.CancellationReasonController.onSubmit(departureId).url
-        )
-        renderer.render(template, json).map(Ok(_))
+        Future.successful(Ok(view(form, departureId, request.lrn)))
     }
 
   def onSubmit(departureId: DepartureId, mode: Mode): Action[AnyContent] =

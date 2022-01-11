@@ -7,10 +7,10 @@ GET        /this-service-has-been-reset                             controllers.
 
 GET        /unauthorised                                            controllers.UnauthorisedController.onPageLoad()
 
-GET        /:departureId/confirm-cancellation                       controllers.ConfirmCancellationController.onPageLoad(departureId: DepartureId, mode: Mode = NormalMode)
+GET        /:departureId/confirm-cancellation                       controllers.ConfirmCancellationController.onPageLoad(departureId: DepartureId)
 POST       /:departureId/confirm-cancellation                       controllers.ConfirmCancellationController.onSubmit(departureId: DepartureId, mode: Mode = NormalMode)
 
-GET        /:departureId/cancellation-reason                        controllers.CancellationReasonController.onPageLoad(departureId: DepartureId, mode: Mode = NormalMode)
+GET        /:departureId/cancellation-reason                        controllers.CancellationReasonController.onPageLoad(departureId: DepartureId)
 POST       /:departureId/cancellation-reason                        controllers.CancellationReasonController.onSubmit(departureId: DepartureId, mode: Mode = NormalMode)
 
 GET        /:departureId/cancellation-submission-confirmation       controllers.CancellationSubmissionConfirmationController.onPageLoad(departureId: DepartureId)

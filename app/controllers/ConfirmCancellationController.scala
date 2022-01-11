@@ -48,7 +48,7 @@ class ConfirmCancellationController @Inject()(
 
   private val form     = formProvider()
 
-  def onPageLoad(departureId: DepartureId, mode: Mode): Action[AnyContent] =
+  def onPageLoad(departureId: DepartureId): Action[AnyContent] =
     (identify andThen checkCancellationStatus(departureId) andThen getData(departureId)).async {
       implicit request =>
         Future.successful(Ok(view(form, departureId, request.lrn)))
