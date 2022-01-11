@@ -17,4 +17,7 @@ GET        /:departureId/cancellation-submission-confirmation       controllers.
 
 GET        /keep-alive                                              controllers.KeepAliveController.keepAlive()
 
+GET        /can-not-cancel                             controllers.CanNotCancelController.onPageLoad()
+GET        /declaration-not-found                      controllers.DeclarationNotFoundController.onPageLoad()
+
 ->         /hmrc-frontend                      hmrcfrontend.Routes
