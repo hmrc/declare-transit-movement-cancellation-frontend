@@ -17,8 +17,7 @@
 package controllers
 
 import base.{MockNunjucksRendererApp, SpecBase}
-import forms.ConfirmCancellationFormProvider
-import models.{LocalReferenceNumber, UserAnswers}
+import models.UserAnswers
 import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito.when
 import pages.ConfirmCancellationPage

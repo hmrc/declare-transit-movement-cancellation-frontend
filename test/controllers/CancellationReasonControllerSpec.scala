@@ -51,54 +51,26 @@ class CancellationReasonControllerSpec extends SpecBase with MockNunjucksRendere
     "must return OK and the correct view for a GET" in {
       checkCancellationStatus()
 
-      when(mockRenderer.render(any(), any())(any()))
-        .thenReturn(Future.successful(Html("")))
-
       dataRetrievalWithData(emptyUserAnswers)
 
       val request        = FakeRequest(GET, cancellationReasonRoute)
-      val templateCaptor = ArgumentCaptor.forClass(classOf[String])
-      val jsonCaptor     = ArgumentCaptor.forClass(classOf[JsObject])
-
       val result = route(app, request).value
 
       status(result) mustEqual OK
 
-      verify(mockRenderer, times(1)).render(templateCaptor.capture(), jsonCaptor.capture())(any())
-
-      val expectedJson = Json.obj(
-        "form"        -> form,
-        "lrn"         -> LocalReferenceNumber("lrn"),
-        "departureId" -> departureId,
-        "onSubmitUrl" -> routes.CancellationReasonController.onSubmit(departureId).url
-      )
-      val jsonWithoutConfig = jsonCaptor.getValue - configKey
-
-      templateCaptor.getValue mustEqual template
-      jsonWithoutConfig mustBe expectedJson
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
       checkCancellationStatus()
-
-      when(mockRenderer.render(any(), any())(any()))
-        .thenReturn(Future.successful(Html("")))
-
       val userAnswers = emptyUserAnswers.set(CancellationReasonPage(departureId), "answer").success.value
       dataRetrievalWithData(userAnswers)
 
       val request        = FakeRequest(GET, cancellationReasonRoute)
-      val templateCaptor = ArgumentCaptor.forClass(classOf[String])
-      val jsonCaptor     = ArgumentCaptor.forClass(classOf[JsObject])
-
       val result = route(app, request).value
 
       status(result) mustEqual OK
 
-      verify(mockRenderer, times(1)).render(templateCaptor.capture(), jsonCaptor.capture())(any())
-
-      templateCaptor.getValue mustEqual template
     }
 
     "must redirect to the next page when valid data is submitted" in {
@@ -135,56 +107,26 @@ class CancellationReasonControllerSpec extends SpecBase with MockNunjucksRendere
 
       val request        = FakeRequest(POST, cancellationReasonRoute)
         .withFormUrlEncodedBody(("value", "answer"))
-      val templateCaptor = ArgumentCaptor.forClass(classOf[String])
-      val jsonCaptor     = ArgumentCaptor.forClass(classOf[JsObject])
 
       val result = route(app, request).value
 
       status(result) mustEqual INTERNAL_SERVER_ERROR
 
-      verify(mockRenderer, times(1)).render(templateCaptor.capture(), jsonCaptor.capture())(any())
-
-      val expectedJson = Json.obj(
-        "contactUrl" -> frontendAppConfig.nctsEnquiriesUrl
-      )
-
-      val jsonWithoutConfig = jsonCaptor.getValue - configKey
-
-      templateCaptor.getValue mustEqual "technicalDifficulties.njk"
-      jsonWithoutConfig must containJson(expectedJson)
     }
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
       checkCancellationStatus()
 
-      when(mockRenderer.render(any(), any())(any()))
-        .thenReturn(Future.successful(Html("")))
-
       dataRetrievalWithData(emptyUserAnswers)
 
       val request        = FakeRequest(POST, cancellationReasonRoute).withFormUrlEncodedBody(("value", ""))
-      val boundForm      = form.bind(Map("value" -> ""))
-      val templateCaptor = ArgumentCaptor.forClass(classOf[String])
-      val jsonCaptor     = ArgumentCaptor.forClass(classOf[JsObject])
 
       val result = route(app, request).value
 
       status(result) mustEqual BAD_REQUEST
 
-      verify(mockRenderer, times(1)).render(templateCaptor.capture(), jsonCaptor.capture())(any())
 
-      val expectedJson = Json.obj(
-        "form"        -> boundForm,
-        "departureId" -> departureId,
-        "lrn"         -> LocalReferenceNumber("lrn"),
-        "onSubmitUrl" -> routes.CancellationReasonController.onSubmit(departureId).url
-      )
-
-      val jsonWithoutConfig = jsonCaptor.getValue - configKey
-
-      templateCaptor.getValue mustEqual template
-      jsonWithoutConfig mustBe expectedJson
 
     }
   }
