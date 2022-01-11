@@ -58,6 +58,8 @@ class CancellationStatusAction(
 
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
+    // TODO move these templates over to twirl
+
     departureMovementConnector.getDeparture(departureId).flatMap {
       case Some(responseDeparture: ResponseDeparture) if !validStatus.contains(responseDeparture.status) =>
         renderer

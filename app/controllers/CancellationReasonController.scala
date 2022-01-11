@@ -19,6 +19,7 @@ package controllers
 import config.FrontendAppConfig
 import controllers.actions._
 import forms.CancellationReasonFormProvider
+import models.Constants.commentMaxLength
 import models.{DepartureId, Mode}
 import navigation.Navigator
 import pages.CancellationReasonPage
@@ -53,12 +54,11 @@ class CancellationReasonController @Inject()(
     with NunjucksSupport {
 
   private val form     = formProvider()
-  private val template = "cancellationReason.njk"
 
   def onPageLoad(departureId: DepartureId): Action[AnyContent] =
     (identify andThen checkCancellationStatus(departureId) andThen getData(departureId) andThen requireData).async {
       implicit request =>
-        Future.successful(Ok(view(form, departureId, request.lrn)))
+        Future.successful(Ok(view(form, departureId, request.lrn, commentMaxLength)))
     }
 
   def onSubmit(departureId: DepartureId, mode: Mode): Action[AnyContent] =
@@ -69,7 +69,7 @@ class CancellationReasonController @Inject()(
           .bindFromRequest()
           .fold(
             formWithErrors => {
-              Future.successful(BadRequest(view(formWithErrors, departureId, request.lrn)))
+              Future.successful(BadRequest(view(formWithErrors, departureId, request.lrn, commentMaxLength)))
             },
             value => {
               Future

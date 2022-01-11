@@ -16,16 +16,17 @@
 
 @import models.{DepartureId, LocalReferenceNumber}
 @import views.html.components.{Button, ErrorSummary, InputTextArea}
+@import views.html.components.InputCharacterCount
 
 @this(
  mainTemplate: MainTemplate,
  formHelper: FormWithCSRF,
  button: Button,
- inputTextArea: InputTextArea,
+ inputCharacterCount: InputCharacterCount,
  errorSummary: ErrorSummary
 )
 
-@(form: Form[String], departureId: DepartureId, lrn: LocalReferenceNumber)(implicit request: Request[_], messages: Messages)
+@(form: Form[String], departureId: DepartureId, lrn: LocalReferenceNumber, maxLength: Int)(implicit request: Request[_], messages: Messages)
 
 @mainTemplate(
     title = messages("cancellationReason.title"),
@@ -36,11 +37,11 @@
 
  @errorSummary(form.errors)
 
-  @inputTextArea(
-    field = form("value"),
-    label = messages("cancellationReason.title"),
-    caption = Some(lrn.value)
-  )
+ @inputCharacterCount(
+     field = form("value"),
+     label = messages("cancellationReason.title"),
+     maxLength = Some(maxLength)
+ )
 
   @button(attributes = Map("id" -> "submit"))
  }
