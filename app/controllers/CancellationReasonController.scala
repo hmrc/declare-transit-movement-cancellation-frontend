@@ -24,13 +24,11 @@ import models.{DepartureId, Mode}
 import navigation.Navigator
 import pages.CancellationReasonPage
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import renderer.Renderer
 import services.CancellationSubmissionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.viewmodels.NunjucksSupport
-import views.html.{CancellationReason, ConfirmCancellation}
+import views.html.{CancellationReason, TechnicalDifficulties}
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -45,9 +43,9 @@ class CancellationReasonController @Inject()(
   formProvider: CancellationReasonFormProvider,
   cancellationSubmissionService: CancellationSubmissionService,
   val controllerComponents: MessagesControllerComponents,
-  renderer: Renderer,
   appConfig: FrontendAppConfig,
-  view: CancellationReason
+  view: CancellationReason,
+  technicalDifficulties: TechnicalDifficulties
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport
@@ -77,15 +75,7 @@ class CancellationReasonController @Inject()(
                 .flatMap(updatedAnswers =>
                   cancellationSubmissionService.submitCancellation(updatedAnswers).flatMap {
                     case Right(_) => Future.successful(Redirect(navigator.nextPage(CancellationReasonPage(departureId), mode, updatedAnswers, departureId)))
-                    case Left(_) => {
-
-                      // TODO twirl techdiff template
-
-                      val json = Json.obj(
-                        "contactUrl" -> appConfig.nctsEnquiriesUrl
-                      )
-                      renderer.render("technicalDifficulties.njk", json).map(content => InternalServerError(content))
-                    }
+                    case Left(_)  => Future.successful(InternalServerError(technicalDifficulties(appConfig.contactHost)))
                 })
             }
           )

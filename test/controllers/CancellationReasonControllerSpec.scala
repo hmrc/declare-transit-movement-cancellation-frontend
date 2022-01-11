@@ -36,13 +36,9 @@ import uk.gov.hmrc.viewmodels.NunjucksSupport
 
 import scala.concurrent.Future
 
-class CancellationReasonControllerSpec extends SpecBase with MockNunjucksRendererApp with MockitoSugar with NunjucksSupport with JsonMatchers {
+class CancellationReasonControllerSpec extends SpecBase with MockitoSugar with NunjucksSupport with JsonMatchers {
 
   def onwardRoute = Call("GET", "/foo")
-
-  private val formProvider = new CancellationReasonFormProvider()
-  private val form         = formProvider()
-  private val template     = "cancellationReason.njk"
 
   lazy val cancellationReasonRoute = routes.CancellationReasonController.onPageLoad(departureId).url
 
@@ -63,7 +59,9 @@ class CancellationReasonControllerSpec extends SpecBase with MockNunjucksRendere
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
       checkCancellationStatus()
+
       val userAnswers = emptyUserAnswers.set(CancellationReasonPage(departureId), "answer").success.value
+
       dataRetrievalWithData(userAnswers)
 
       val request        = FakeRequest(GET, cancellationReasonRoute)
@@ -95,10 +93,8 @@ class CancellationReasonControllerSpec extends SpecBase with MockNunjucksRendere
     }
 
     "must return InternalServerError when the submission fails" in {
-      checkCancellationStatus()
 
-      when(mockRenderer.render(any(), any())(any()))
-        .thenReturn(Future.successful(Html("")))
+      checkCancellationStatus()
 
       when(mockSubmissionService.submitCancellation(any())(any()))
         .thenReturn(Future.successful(Left(InvalidState)))
@@ -125,8 +121,6 @@ class CancellationReasonControllerSpec extends SpecBase with MockNunjucksRendere
       val result = route(app, request).value
 
       status(result) mustEqual BAD_REQUEST
-
-
 
     }
   }
