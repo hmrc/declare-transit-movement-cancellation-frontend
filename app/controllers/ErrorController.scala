@@ -19,13 +19,14 @@ package controllers
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-
 import javax.inject.Inject
+import views.html.NotFound
 import views.html.ErrorTemplate
 
 class ErrorController @Inject()(
   val controllerComponents: MessagesControllerComponents,
-  errorTemplate: ErrorTemplate
+  errorTemplate: ErrorTemplate,
+  notFoundView: NotFound
 ) extends FrontendBaseController with I18nSupport {
 
   def badRequest: Action[AnyContent] = Action {
@@ -35,6 +36,11 @@ class ErrorController @Inject()(
         header = "global.error.badRequest400.heading",
         message = "global.error.badRequest400.message"
       ))
+  }
+
+  def notFound: Action[AnyContent] = Action {
+    implicit request =>
+      NotFound(notFoundView())
   }
 
 }

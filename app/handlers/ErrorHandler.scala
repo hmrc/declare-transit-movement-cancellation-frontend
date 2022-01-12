@@ -51,7 +51,7 @@ class ErrorHandler @Inject()(
       case BAD_REQUEST =>
         Future.successful(Redirect(controllers.routes.ErrorController.badRequest()))
       case NOT_FOUND =>
-        renderer.render("notFound.njk", Json.obj()).map(NotFound(_))
+        Future.successful(Redirect(controllers.routes.ErrorController.notFound()))
       case _ =>
         renderer.render("error.njk", Json.obj()).map {
           content =>
