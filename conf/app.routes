@@ -7,6 +7,8 @@ GET        /this-service-has-been-reset                             controllers.
 
 GET        /unauthorised                                            controllers.UnauthorisedController.onPageLoad()
 
+GET        /unauthorised-group-access                               controllers.UnauthorisedWithGroupAccessController.onPageLoad()
+
 GET        /:departureId/confirm-cancellation                       controllers.ConfirmCancellationController.onPageLoad(departureId: DepartureId)
 POST       /:departureId/confirm-cancellation                       controllers.ConfirmCancellationController.onSubmit(departureId: DepartureId, mode: Mode = NormalMode)
 

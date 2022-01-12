@@ -16,19 +16,23 @@
 
 package controllers
 
-import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.Unauthorised
+import base.SpecBase
+import play.api.test.FakeRequest
+import play.api.test.Helpers._
 
-import javax.inject.Inject
+class UnauthorisedWithGroupAccessControllerSpec extends SpecBase {
 
-class UnauthorisedController @Inject()(val controllerComponents: MessagesControllerComponents, view: Unauthorised)
-    extends FrontendBaseController
-    with I18nSupport {
+  "UnauthorisedWithGroupAccess Controller" - {
 
-  def onPageLoad(): Action[AnyContent] = Action {
-    implicit request =>
-      Ok(view())
+    "must return OK and the correct view for a GET" in {
+
+      val application = applicationBuilder(userAnswers = None).build()
+
+      val request = FakeRequest(GET, routes.UnauthorisedWithGroupAccessController.onPageLoad().url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual UNAUTHORIZED
+    }
   }
 }

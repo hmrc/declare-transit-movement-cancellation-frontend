@@ -81,15 +81,14 @@ class AuthenticatedIdentifierAction @Inject()(
 
   private def checkForGroupEnrolment[A](maybeGroupId: Option[String], config: FrontendAppConfig)(implicit
                                                                                                  hc: HeaderCarrier,
-                                                                                                 request: Request[A]
-  ): Future[Result] =
+                                                                                                 request: Request[A]): Future[Result] =
     maybeGroupId match {
       case Some(groupId) =>
         val hasGroupEnrolment = for {
           newGroupEnrolment <- enrolmentStoreConnector.checkGroupEnrolments(groupId, config.newEnrolmentKey)
-          legacyGroupEnrolment <-
-            if (newGroupEnrolment) { Future.successful(newGroupEnrolment) }
-            else { enrolmentStoreConnector.checkGroupEnrolments(groupId, config.legacyEnrolmentKey) }
+          legacyGroupEnrolment <- if (newGroupEnrolment) { Future.successful(newGroupEnrolment) } else {
+            enrolmentStoreConnector.checkGroupEnrolments(groupId, config.legacyEnrolmentKey)
+          }
         } yield newGroupEnrolment || legacyGroupEnrolment
 
         hasGroupEnrolment flatMap {
@@ -100,11 +99,7 @@ class AuthenticatedIdentifierAction @Inject()(
     }
 }
 
-class SessionIdentifierAction @Inject()(
-  config: FrontendAppConfig,
-  val parser: BodyParsers.Default
-)(implicit val executionContext: ExecutionContext)
-    extends IdentifierAction {
+class SessionIdentifierAction @Inject()(val parser: BodyParsers.Default)(implicit val executionContext: ExecutionContext) extends IdentifierAction {
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
 
