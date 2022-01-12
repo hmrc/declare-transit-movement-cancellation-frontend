@@ -16,17 +16,21 @@
 
 package controllers
 
+import config.FrontendAppConfig
 import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Results}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import javax.inject.Inject
 import views.html.NotFound
 import views.html.ErrorTemplate
+import views.html.TechnicalDifficulties
 
 class ErrorController @Inject()(
   val controllerComponents: MessagesControllerComponents,
   errorTemplate: ErrorTemplate,
-  notFoundView: NotFound
+  notFoundView: NotFound,
+  technicalDifficulties: TechnicalDifficulties,
+  appConfig: FrontendAppConfig
 ) extends FrontendBaseController with I18nSupport {
 
   def badRequest: Action[AnyContent] = Action {
@@ -41,6 +45,11 @@ class ErrorController @Inject()(
   def notFound: Action[AnyContent] = Action {
     implicit request =>
       NotFound(notFoundView())
+  }
+
+  def technicalDifficulties: Action[AnyContent] = Action {
+    implicit request =>
+      InternalServerError(technicalDifficulties(appConfig.contactHost))
   }
 
 }

@@ -53,10 +53,7 @@ class ErrorHandler @Inject()(
       case NOT_FOUND =>
         Future.successful(Redirect(controllers.routes.ErrorController.notFound()))
       case _ =>
-        renderer.render("error.njk", Json.obj()).map {
-          content =>
-            Results.Status(statusCode)(content)
-        }
+        Future.successful(Redirect(controllers.routes.ErrorController.technicalDifficulties()))
     }
   }
 
