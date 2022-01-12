@@ -41,8 +41,7 @@ class AuthenticatedIdentifierAction @Inject()(
   override val authConnector: AuthConnector,
   config: FrontendAppConfig,
   val parser: BodyParsers.Default,
-  enrolmentStoreConnector: EnrolmentStoreConnector,
-  renderer: Renderer
+  enrolmentStoreConnector: EnrolmentStoreConnector
 )(implicit val executionContext: ExecutionContext)
     extends IdentifierAction
     with AuthorisedFunctions {
@@ -91,9 +90,9 @@ class AuthenticatedIdentifierAction @Inject()(
           }
         } yield newGroupEnrolment || legacyGroupEnrolment
 
-        hasGroupEnrolment flatMap {
-          case true  => renderer.render("unauthorisedWithGroupAccess.njk").map(Unauthorized(_))
-          case false => Future.successful(Redirect(config.eccEnrolmentSplashPage))
+        hasGroupEnrolment.map {
+          case true  => Redirect(controllers.routes.UnauthorisedWithGroupAccessController.onPageLoad())
+          case false => Redirect(config.eccEnrolmentSplashPage)
         }
       case _ => Future.successful(Redirect(config.eccEnrolmentSplashPage))
     }
