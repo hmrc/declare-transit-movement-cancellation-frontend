@@ -16,27 +16,21 @@
 
 package controllers
 
-import base.{MockNunjucksRendererApp, SpecBase}
-import forms.CancellationReasonFormProvider
+import base.SpecBase
 import matchers.JsonMatchers
-import models.LocalReferenceNumber
-import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.{times, verify, when}
+import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.CancellationReasonPage
-import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.Call
 import play.api.test.Helpers._
 import play.api.test.{FakeRequest, Helpers}
-import play.twirl.api.Html
 import services.responses.InvalidState
 import uk.gov.hmrc.http.HttpResponse
-import uk.gov.hmrc.viewmodels.NunjucksSupport
 
 import scala.concurrent.Future
 
-class CancellationReasonControllerSpec extends SpecBase with MockitoSugar with NunjucksSupport with JsonMatchers {
+class CancellationReasonControllerSpec extends SpecBase with MockitoSugar with JsonMatchers {
 
   def onwardRoute = Call("GET", "/foo")
 

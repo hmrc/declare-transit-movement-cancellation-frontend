@@ -32,7 +32,6 @@ import play.api.mvc.Results._
 import play.api.mvc._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import renderer.Renderer
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -41,8 +40,6 @@ class CancellationStatusActionSpec extends SpecBase with BeforeAndAfterEach with
 
   val mockConnector: DepartureMovementConnector = mock[DepartureMovementConnector]
   val validStatus: Seq[DepartureStatus] = Seq(GuaranteeNotValid, MrnAllocated, NoReleaseForTransit, ControlDecisionNotification)
-
-  val renderer: Renderer = app.injector.instanceOf[Renderer]
 
   override def beforeEach: Unit = {
     super.beforeEach

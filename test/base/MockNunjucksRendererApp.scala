@@ -33,15 +33,11 @@ import play.api.mvc.{ActionRefiner, ActionTransformer, Result}
 import play.api.test.Helpers
 import repositories.SessionRepository
 import services.CancellationSubmissionService
-import uk.gov.hmrc.nunjucks.NunjucksRenderer
 
 import scala.concurrent.{ExecutionContext, Future}
 
 trait MockNunjucksRendererApp extends GuiceOneAppPerSuite with BeforeAndAfterEach with MockitoSugar {
   self: TestSuite =>
-
-  @deprecated("No longer dependent on renderer", since = "10/02/22")
-  val mockRenderer: NunjucksRenderer = mock[NunjucksRenderer]
 
   val mockSubmissionService: CancellationSubmissionService = mock[CancellationSubmissionService]
 
@@ -53,7 +49,6 @@ trait MockNunjucksRendererApp extends GuiceOneAppPerSuite with BeforeAndAfterEac
 
   override def beforeEach {
     Mockito.reset(
-      mockRenderer,
       mockDataRetrievalActionProvider,
       mockCheckCancellationStatusProvider,
       mockSessionRepository
@@ -106,7 +101,6 @@ trait MockNunjucksRendererApp extends GuiceOneAppPerSuite with BeforeAndAfterEac
         bind[IdentifierAction].to[FakeIdentifierAction],
         bind[DataRetrievalActionProvider].toInstance(mockDataRetrievalActionProvider),
         bind[CheckCancellationStatusProvider].toInstance(mockCheckCancellationStatusProvider),
-        bind[NunjucksRenderer].toInstance(mockRenderer),
         bind[MessagesApi].toInstance(Helpers.stubMessagesApi()),
         bind[CancellationSubmissionService].toInstance(mockSubmissionService),
         bind[SessionRepository].toInstance(mockSessionRepository)
@@ -120,7 +114,6 @@ trait MockNunjucksRendererApp extends GuiceOneAppPerSuite with BeforeAndAfterEac
         bind[IdentifierAction].to[FakeIdentifierAction],
         bind[DataRetrievalActionProvider]
           .toInstance(new FakeDataRetrievalActionProvider(userAnswers)),
-        bind[NunjucksRenderer].toInstance(mockRenderer),
         bind[MessagesApi].toInstance(Helpers.stubMessagesApi())
       )
 

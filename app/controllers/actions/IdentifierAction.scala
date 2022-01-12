@@ -25,7 +25,6 @@ import models.EoriNumber.prefixGBIfMissing
 import models.requests.IdentifierRequest
 import play.api.mvc.Results._
 import play.api.mvc._
-import renderer.Renderer
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.authorise.EmptyPredicate
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals

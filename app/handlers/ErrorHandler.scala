@@ -19,15 +19,12 @@ package handlers
 import play.Logger
 
 import javax.inject.{Inject, Singleton}
-import play.api.http.HeaderNames.CACHE_CONTROL
 import play.api.http.HttpErrorHandler
 import play.api.http.Status._
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.libs.json.Json
 import play.api.mvc.Results._
-import play.api.mvc.{RequestHeader, Result, Results}
+import play.api.mvc.{RequestHeader, Result}
 import play.api.PlayException
-import renderer.Renderer
 import uk.gov.hmrc.play.bootstrap.frontend.http.ApplicationException
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -35,7 +32,6 @@ import scala.concurrent.{ExecutionContext, Future}
 // NOTE: There should be changes to bootstrap to make this easier, the API in bootstrap should allow a `Future[Html]` rather than just an `Html`
 @Singleton
 class ErrorHandler @Inject()(
-  renderer: Renderer,
   val messagesApi: MessagesApi
 )(implicit ec: ExecutionContext)
     extends HttpErrorHandler

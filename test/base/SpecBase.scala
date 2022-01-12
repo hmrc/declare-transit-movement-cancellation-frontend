@@ -18,7 +18,6 @@ package base
 
 import config.FrontendAppConfig
 import models.{DepartureId, EoriNumber, UserAnswers}
-import org.mockito.Mockito
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
@@ -42,10 +41,6 @@ trait SpecBase
     with MockitoSugar
     with BeforeAndAfterEach
     with MockNunjucksRendererApp {
-
-  override def beforeEach {
-    Mockito.reset(mockRenderer)
-  }
 
   val departureId = DepartureId(1)
 
