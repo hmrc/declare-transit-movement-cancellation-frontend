@@ -49,7 +49,7 @@ class ErrorHandler @Inject()(
 
     statusCode match {
       case BAD_REQUEST =>
-        renderer.render("badRequest.njk").map(BadRequest(_))
+        Future.successful(Redirect(controllers.routes.ErrorController.badRequest()))
       case NOT_FOUND =>
         renderer.render("notFound.njk", Json.obj()).map(NotFound(_))
       case _ =>

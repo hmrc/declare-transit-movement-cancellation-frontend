@@ -21,5 +21,6 @@ GET        /keep-alive                                              controllers.
 
 GET        /can-not-cancel                             controllers.CanNotCancelController.onPageLoad()
 GET        /declaration-not-found                      controllers.DeclarationNotFoundController.onPageLoad()
+GET        /bad-request                                controllers.ErrorController.badRequest()
 
 ->         /hmrc-frontend                      hmrcfrontend.Routes
