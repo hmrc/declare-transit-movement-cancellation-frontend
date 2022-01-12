@@ -66,10 +66,7 @@ class ErrorHandler @Inject()(
       case ApplicationException(result, _) =>
         Future.successful(result)
       case _ =>
-        renderer.render("internalServerError.njk").map {
-          content =>
-            InternalServerError(content).withHeaders(CACHE_CONTROL -> "no-cache")
-        }
+        Future.successful(Redirect(controllers.routes.ErrorController.internalServerError()))
     }
   }
 

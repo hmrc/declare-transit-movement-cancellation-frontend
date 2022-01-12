@@ -52,4 +52,13 @@ class ErrorController @Inject()(
       InternalServerError(technicalDifficulties(appConfig.contactHost))
   }
 
+  def internalServerError: Action[AnyContent] = Action {
+    implicit request =>
+      InternalServerError(errorTemplate(
+        title = "global.error.InternalServerError500.title",
+        header = "global.error.InternalServerError500.heading",
+        message = "global.error.InternalServerError500.message"
+      ))
+  }
+
 }

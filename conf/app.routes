@@ -24,6 +24,7 @@ GET        /declaration-not-found                                   controllers.
 GET        /bad-request                                             controllers.ErrorController.badRequest()
 GET        /not-found                                               controllers.ErrorController.notFound()
 GET        /technical-difficulties                                  controllers.ErrorController.technicalDifficulties()
+GET        /internal-server-error                                   controllers.ErrorController.internalServerError()
 
 
 ->         /hmrc-frontend                      hmrcfrontend.Routes
