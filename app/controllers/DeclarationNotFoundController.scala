@@ -23,19 +23,17 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.DeclarationNotFound
 
 import javax.inject.Inject
-import scala.concurrent.ExecutionContext
 
 class DeclarationNotFoundController @Inject()(
   val controllerComponents: MessagesControllerComponents,
   view: DeclarationNotFound,
-  appConfig:FrontendAppConfig
-)(implicit ec: ExecutionContext)
-  extends FrontendBaseController
+  appConfig: FrontendAppConfig
+) extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad(): Action[AnyContent] = Action {
     implicit request =>
-      val departuresListUrl =  s"${appConfig.manageTransitMovementsViewDeparturesUrl}"
+      val departuresListUrl = s"${appConfig.manageTransitMovementsViewDeparturesUrl}"
       NotFound(view(departuresListUrl))
   }
 }

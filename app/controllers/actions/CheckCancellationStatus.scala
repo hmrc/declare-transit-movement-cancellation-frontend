@@ -16,28 +16,22 @@
 
 package controllers.actions
 
-import config.FrontendAppConfig
 import connectors.DepartureMovementConnector
 import models.DepartureStatus._
 import models.requests.{AuthorisedRequest, IdentifierRequest}
 import models.response.ResponseDeparture
 import models.{DepartureId, DepartureStatus}
-import play.api.i18n.MessagesApi
-import play.api.libs.json.Json
 import play.api.mvc.Results._
-import play.api.mvc.{ActionRefiner, MessagesControllerComponents, Result}
-import renderer.Renderer
+import play.api.mvc.{ActionRefiner, Result}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
-import views.html.CanNotCancel
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class CheckCancellationStatusProvider @Inject()(
-                                                 departureMovementConnector: DepartureMovementConnector
-                                                )(
-  implicit ec: ExecutionContext) {
+  departureMovementConnector: DepartureMovementConnector
+)(implicit ec: ExecutionContext) {
 
   def apply(departureId: DepartureId): ActionRefiner[IdentifierRequest, AuthorisedRequest] =
     new CancellationStatusAction(departureId, departureMovementConnector)
@@ -50,11 +44,8 @@ class CancellationStatusAction(
 )(implicit protected val executionContext: ExecutionContext)
     extends ActionRefiner[IdentifierRequest, AuthorisedRequest] {
 
-  final val validStatus: Seq[DepartureStatus] = Seq(GuaranteeNotValid,
-      MrnAllocated,
-      NoReleaseForTransit,
-      ControlDecisionNotification,
-      DeclarationCancellationRequestNegativeAcknowledgement)
+  final val validStatus: Seq[DepartureStatus] =
+    Seq(GuaranteeNotValid, MrnAllocated, NoReleaseForTransit, ControlDecisionNotification, DeclarationCancellationRequestNegativeAcknowledgement)
 
   override protected def refine[A](request: IdentifierRequest[A]): Future[Either[Result, AuthorisedRequest[A]]] = {
 
@@ -62,13 +53,13 @@ class CancellationStatusAction(
 
     departureMovementConnector.getDeparture(departureId).map {
       case Some(responseDeparture: ResponseDeparture) if !validStatus.contains(responseDeparture.status) =>
-       Left(Redirect(controllers.routes.CanNotCancelController.onPageLoad()))
+        Left(Redirect(controllers.routes.CanNotCancelController.onPageLoad()))
 
       case Some(responseDeparture: ResponseDeparture) if validStatus.contains(responseDeparture.status) =>
         Right(AuthorisedRequest(request.request, request.eoriNumber, responseDeparture.localReferenceNumber))
 
       case None =>
-       Left(Redirect(controllers.routes.DeclarationNotFoundController.onPageLoad()))
+        Left(Redirect(controllers.routes.DeclarationNotFoundController.onPageLoad()))
 
     }
   }
