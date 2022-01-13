@@ -36,7 +36,7 @@ import services.CancellationSubmissionService
 
 import scala.concurrent.{ExecutionContext, Future}
 
-trait MockNunjucksRendererApp extends GuiceOneAppPerSuite with BeforeAndAfterEach with MockitoSugar {
+trait MockApplicationBuilder extends GuiceOneAppPerSuite with BeforeAndAfterEach with MockitoSugar {
   self: TestSuite =>
 
   val mockSubmissionService: CancellationSubmissionService = mock[CancellationSubmissionService]

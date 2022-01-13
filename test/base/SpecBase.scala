@@ -40,7 +40,7 @@ trait SpecBase
     with IntegrationPatience
     with MockitoSugar
     with BeforeAndAfterEach
-    with MockNunjucksRendererApp {
+    with MockApplicationBuilder {
 
   val departureId = DepartureId(1)
 

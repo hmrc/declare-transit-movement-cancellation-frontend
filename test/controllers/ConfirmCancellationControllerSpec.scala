@@ -16,7 +16,7 @@
 
 package controllers
 
-import base.{MockNunjucksRendererApp, SpecBase}
+import base.SpecBase
 import models.UserAnswers
 import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito.when
@@ -27,7 +27,7 @@ import play.api.test.Helpers._
 
 import scala.concurrent.Future
 
-class ConfirmCancellationControllerSpec extends SpecBase with MockNunjucksRendererApp {
+class ConfirmCancellationControllerSpec extends SpecBase  {
 
   def onwardRoute = Call("GET", "/foo")
 
