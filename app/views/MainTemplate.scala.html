@@ -86,5 +86,7 @@
     )),
     beforeContentBlock = Some(beforeContentBlock),
     scriptsBlock = Some(hmrcScripts()),
-    footerBlock = Some(hmrcStandardFooter())
+    footerBlock = Some(hmrcStandardFooter(
+        accessibilityStatementUrl = Some("/accessibility-statement/manage-transit-movements")
+    ))
 )(mainContentWithGetHelp)
