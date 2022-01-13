@@ -67,6 +67,10 @@
     @hmrcReportTechnicalIssueHelper()
 }
 
+@phaseBannerContent = {
+    @messages("phaseBanner.1") <a class="govuk-link" href="@(appConfig.betaFeedbackUnauthenticatedUrl)">@messages("phaseBanner.2")</a> @messages("phaseBanner.3")
+}
+
 @govukLayout(
     pageTitle = Some(title),
     headBlock = Some(hmrcHead(
@@ -75,7 +79,10 @@
     headerBlock = Some(hmrcStandardHeader(
         serviceUrl = Some(appConfig.loginContinueUrl),
         signOutUrl = if(canSignOut) Some(appConfig.signOutUrl) else None,
-        phaseBanner = None
+        phaseBanner = Some(PhaseBanner(
+            tag = Some(Tag(content = Text("BETA"))),
+            content = HtmlContent(phaseBannerContent)
+        ))
     )),
     beforeContentBlock = Some(beforeContentBlock),
     scriptsBlock = Some(hmrcScripts()),
