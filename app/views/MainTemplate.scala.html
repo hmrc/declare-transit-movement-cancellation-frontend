@@ -16,6 +16,7 @@
 
 @import config.FrontendAppConfig
 @import uk.gov.hmrc.hmrcfrontend.views.config.StandardBetaBanner
+@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.footer.{Footer, FooterItem, Meta}
 @import resources._
 
 @this(
@@ -24,15 +25,14 @@
         hmrcHead: HmrcHead,
         hmrcLanguageSelectHelper: HmrcLanguageSelectHelper,
         hmrcTimeoutDialogHelper: HmrcTimeoutDialogHelper,
-        hmrcStandardFooter: HmrcStandardFooter,
         hmrcStandardHeader: HmrcStandardHeader,
         standardBetaBanner: StandardBetaBanner,
         hmrcScripts: HmrcScripts,
         stylesheets: Stylesheets,
         govukBackLink: GovukBackLink,
-        hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper
+        hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
+        hmrcFooter: HmrcFooter
 )
-
 @(title: String,
         sidebarLinks: Option[Html] = None,
         contentHeader: Option[Html] = None,
@@ -86,7 +86,31 @@
     )),
     beforeContentBlock = Some(beforeContentBlock),
     scriptsBlock = Some(hmrcScripts()),
-    footerBlock = Some(hmrcStandardFooter(
-        accessibilityStatementUrl = Some("/accessibility-statement/manage-transit-movements")
-    ))
+    footerBlock = Some(hmrcFooter(Footer(
+        meta = Some(Meta(
+          visuallyHiddenTitle = Some(messages("footer.links.support_links")),
+          items = Some(Seq(
+            FooterItem(
+              href = Some("/help/cookies"),
+              text = Some(messages("footer.links.cookies"))
+            ),
+            FooterItem(
+              href = Some("/accessibility-statement/manage-transit-movements"),
+              text = Some(messages("footer.links.accessibility"))
+            ),
+            FooterItem(
+              href = Some("/help/privacy"),
+              text = Some(messages("footer.links.privacy"))
+            ),
+            FooterItem(
+              href = Some("/help/terms-and-conditions"),
+              text = Some(messages("footer.links.terms"))
+            ),
+            FooterItem(
+              href = Some("https://www.gov.uk/help"),
+              text = Some(messages("footer.links.help"))
+            )
+          ))
+        ))
+    )))
 )(mainContentWithGetHelp)
