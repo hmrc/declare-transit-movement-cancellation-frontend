@@ -19,6 +19,7 @@
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.timeoutdialog.TimeoutDialog
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.footer.{Footer, FooterItem, Meta}
 @import resources._
+@import views.ViewUtils._
 
 @this(
         appConfig: FrontendAppConfig,
@@ -79,7 +80,7 @@
 }
 
 @govukLayout(
-    pageTitle = Some(title),
+    pageTitle = Some(breadCrumbTitle(title)),
     headBlock = Some(hmrcHead(
         headBlock = Some(headScripts)
     )),

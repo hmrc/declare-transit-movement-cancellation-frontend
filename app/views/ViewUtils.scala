@@ -25,6 +25,10 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.textarea.Textarea
 
 object ViewUtils {
 
+   def breadCrumbTitle(title: String)(implicit messages: Messages): String = {
+     s"$title - ${messages("service.name")} - GOV.UK"
+   }
+
   // TODO refactor this maybe? Going to need this for every ViewModel type going forward
 
   implicit class RadioImplicits(radios: Radios)(implicit messages: Messages) extends RichRadiosSupport {
