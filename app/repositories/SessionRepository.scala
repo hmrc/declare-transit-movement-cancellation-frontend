@@ -71,9 +71,9 @@ class DefaultSessionRepository @Inject() (
 
   val started: Future[Unit] =
     for {
-      coll <- collection
-      _    <- if (replaceIndexes) coll.indexesManager.dropAll() else Future.successful(0)
-      _    <- coll.indexesManager.ensure(lastUpdatedIndex)
+      indexesManager <- collection.map(_.indexesManager)
+      _              <- if (replaceIndexes) indexesManager.dropAll() else Future.successful(0)
+      _              <- indexesManager.ensure(lastUpdatedIndex)
     } yield ()
 
   override def get(departureId: DepartureId, eoriNumber: EoriNumber): Future[Option[UserAnswers]] =
