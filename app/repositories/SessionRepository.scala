@@ -38,7 +38,8 @@ class DefaultSessionRepository @Inject() (
 
   private val collectionName: String = "user-answers"
 
-  private val cacheTtl = config.get[Int]("mongodb.timeToLiveInSeconds")
+  private val cacheTtl       = config.get[Int]("mongodb.timeToLiveInSeconds")
+  private val replaceIndexes = config.get[Boolean]("feature-flags.replace-indexes")
 
   private def collection: Future[JSONCollection] =
     mongo.database.map(_.collection[JSONCollection](collectionName))
@@ -46,7 +47,7 @@ class DefaultSessionRepository @Inject() (
   private val lastUpdatedIndex = Index.apply(BSONSerializationPack)(
     key = Seq("lastUpdated" -> IndexType.Ascending),
     name = Some("user-answers-last-updated-index"),
-    unique = true,
+    unique = false,
     background = false,
     dropDups = false,
     sparse = false,
@@ -69,13 +70,11 @@ class DefaultSessionRepository @Inject() (
   )
 
   val started: Future[Unit] =
-    collection
-      .flatMap {
-        _.indexesManager.ensure(lastUpdatedIndex)
-      }
-      .map(
-        _ => ()
-      )
+    for {
+      indexesManager <- collection.map(_.indexesManager)
+      _              <- if (replaceIndexes) indexesManager.dropAll() else Future.successful(0)
+      _              <- indexesManager.ensure(lastUpdatedIndex)
+    } yield ()
 
   override def get(departureId: DepartureId, eoriNumber: EoriNumber): Future[Option[UserAnswers]] =
     collection.flatMap(_.find(Json.obj("_id" -> departureId), None).one[UserAnswers])
