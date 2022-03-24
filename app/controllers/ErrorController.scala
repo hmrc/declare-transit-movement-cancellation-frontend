@@ -18,28 +18,30 @@ package controllers
 
 import config.FrontendAppConfig
 import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Results}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import javax.inject.Inject
-import views.html.NotFound
-import views.html.ErrorTemplate
-import views.html.TechnicalDifficulties
+import views.html.{ErrorTemplate, NotFound, TechnicalDifficulties}
 
-class ErrorController @Inject()(
+import javax.inject.Inject
+
+class ErrorController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   errorTemplate: ErrorTemplate,
   notFoundView: NotFound,
   technicalDifficulties: TechnicalDifficulties,
   appConfig: FrontendAppConfig
-) extends FrontendBaseController with I18nSupport {
+) extends FrontendBaseController
+    with I18nSupport {
 
   def badRequest: Action[AnyContent] = Action {
     implicit request =>
-      BadRequest(errorTemplate(
-        title = "global.error.badRequest400.title",
-        header = "global.error.badRequest400.heading",
-        message = "global.error.badRequest400.message"
-      ))
+      BadRequest(
+        errorTemplate(
+          title = "global.error.badRequest400.title",
+          header = "global.error.badRequest400.heading",
+          message = "global.error.badRequest400.message"
+        )
+      )
   }
 
   def notFound: Action[AnyContent] = Action {
@@ -54,11 +56,13 @@ class ErrorController @Inject()(
 
   def internalServerError: Action[AnyContent] = Action {
     implicit request =>
-      InternalServerError(errorTemplate(
-        title = "global.error.InternalServerError500.title",
-        header = "global.error.InternalServerError500.heading",
-        message = "global.error.InternalServerError500.message"
-      ))
+      InternalServerError(
+        errorTemplate(
+          title = "global.error.InternalServerError500.title",
+          header = "global.error.InternalServerError500.heading",
+          message = "global.error.InternalServerError500.message"
+        )
+      )
   }
 
 }

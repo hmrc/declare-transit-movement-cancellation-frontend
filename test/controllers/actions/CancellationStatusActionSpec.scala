@@ -39,7 +39,7 @@ import scala.concurrent.Future
 class CancellationStatusActionSpec extends SpecBase with BeforeAndAfterEach with ScalaCheckPropertyChecks {
 
   val mockConnector: DepartureMovementConnector = mock[DepartureMovementConnector]
-  val validStatus: Seq[DepartureStatus] = Seq(GuaranteeNotValid, MrnAllocated, NoReleaseForTransit, ControlDecisionNotification)
+  val validStatus: Seq[DepartureStatus]         = Seq(GuaranteeNotValid, MrnAllocated, NoReleaseForTransit, ControlDecisionNotification)
 
   override def beforeEach: Unit = {
     super.beforeEach
@@ -54,16 +54,15 @@ class CancellationStatusActionSpec extends SpecBase with BeforeAndAfterEach with
       val gen = Gen.oneOf(validStatus)
       forAll(gen) {
         departureStatus =>
-          val mockDepartureResponse: ResponseDeparture = {
+          val mockDepartureResponse: ResponseDeparture =
             ResponseDeparture(
               LocalReferenceNumber("lrn"),
               departureStatus
             )
-          }
 
           when(mockConnector.getDeparture(any())(any())).thenReturn(Future.successful(Some(mockDepartureResponse)))
 
-          val checkCancellationStatusProvider = (new CheckCancellationStatusProvider(mockConnector)(implicitly)) (DepartureId(1))
+          val checkCancellationStatusProvider = (new CheckCancellationStatusProvider(mockConnector)(implicitly))(DepartureId(1))
 
           val testRequest = IdentifierRequest(FakeRequest(GET, "/"), EoriNumber("eori"))
 
@@ -76,24 +75,22 @@ class CancellationStatusActionSpec extends SpecBase with BeforeAndAfterEach with
     }
 
     "will get a 303 and will load the cannot cancel page when the departure status is invalid" in {
-      val mockDepartureResponse: ResponseDeparture = {
+      val mockDepartureResponse: ResponseDeparture =
         ResponseDeparture(
           LocalReferenceNumber("lrn"),
           WriteOffNotification
         )
-      }
-
 
       when(mockConnector.getDeparture(any())(any())).thenReturn(Future.successful(Some(mockDepartureResponse)))
 
-      val checkCancellationStatusProvider = (new CheckCancellationStatusProvider(mockConnector)(implicitly)) (DepartureId(1))
+      val checkCancellationStatusProvider = (new CheckCancellationStatusProvider(mockConnector)(implicitly))(DepartureId(1))
 
       val testRequest = IdentifierRequest(FakeRequest(GET, "/"), EoriNumber("eori"))
 
       val result: Future[Result] = checkCancellationStatusProvider.invokeBlock(testRequest, fakeOkResult)
 
       status(result) mustEqual SEE_OTHER
-      contentAsString(result) must not be ("fake ok result value")
+      contentAsString(result) must not be "fake ok result value"
       redirectLocation(result).value mustBe controllers.routes.CanNotCancelController.onPageLoad().url
     }
 
@@ -101,14 +98,14 @@ class CancellationStatusActionSpec extends SpecBase with BeforeAndAfterEach with
 
       when(mockConnector.getDeparture(any())(any())).thenReturn(Future.successful(None))
 
-      val checkCancellationStatusProvider = (new CheckCancellationStatusProvider(mockConnector)(implicitly)) (DepartureId(1))
+      val checkCancellationStatusProvider = (new CheckCancellationStatusProvider(mockConnector)(implicitly))(DepartureId(1))
 
       val testRequest = IdentifierRequest(FakeRequest(GET, "/"), EoriNumber("eori"))
 
       val result: Future[Result] = checkCancellationStatusProvider.invokeBlock(testRequest, fakeOkResult)
 
       status(result) mustEqual SEE_OTHER
-      contentAsString(result) must not be ("fake ok result value")
+      contentAsString(result) must not be "fake ok result value"
       redirectLocation(result).value mustBe controllers.routes.DeclarationNotFoundController.onPageLoad().url
     }
 

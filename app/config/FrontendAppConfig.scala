@@ -20,7 +20,7 @@ import com.google.inject.{Inject, Singleton}
 import play.api.Configuration
 
 @Singleton
-class FrontendAppConfig @Inject()(configuration: Configuration) {
+class FrontendAppConfig @Inject() (configuration: Configuration) {
 
   val contactHost: String                  = configuration.get[String]("contact-frontend.host")
   val contactFormServiceIdentifier: String = "CTCTraders"
@@ -32,18 +32,15 @@ class FrontendAppConfig @Inject()(configuration: Configuration) {
   val userResearchUrl: String         = configuration.get[String]("urls.userResearch")
   val showUserResearchBanner: Boolean = configuration.get[Boolean]("banners.showUserResearch")
 
-  val analyticsToken: String         = configuration.get[String](s"google-analytics.token")
-  val analyticsHost: String          = configuration.get[String](s"google-analytics.host")
-  val betaFeedbackUrl                = s"$contactHost/contact/beta-feedback"
-  val betaFeedbackUnauthenticatedUrl = s"$contactHost/contact/beta-feedback-unauthenticated"
+  val betaFeedbackUnauthenticatedUrl = s"$contactHost/contact/beta-feedback-unauthenticated?service=$contactFormServiceIdentifier"
   val signOutUrl: String             = configuration.get[String]("urls.logoutContinue") + configuration.get[String]("urls.feedback")
   lazy val nctsEnquiriesUrl: String  = configuration.get[String]("urls.nctsEnquiries")
 
-  lazy val authUrl: String                = configuration.get[Service]("auth").baseUrl
-  lazy val loginUrl: String               = configuration.get[String]("urls.login")
-  lazy val loginContinueUrl: String       = configuration.get[String]("urls.loginContinue")
-  lazy val enrolmentKey: String           = configuration.get[String]("microservice.services.auth.enrolmentKey")
-  lazy val enrolmentProxyUrl: String                   = configuration.get[Service]("microservice.services.enrolment-store-proxy").fullServiceUrl
+  lazy val authUrl: String           = configuration.get[Service]("auth").baseUrl
+  lazy val loginUrl: String          = configuration.get[String]("urls.login")
+  lazy val loginContinueUrl: String  = configuration.get[String]("urls.loginContinue")
+  lazy val enrolmentKey: String      = configuration.get[String]("microservice.services.auth.enrolmentKey")
+  lazy val enrolmentProxyUrl: String = configuration.get[Service]("microservice.services.enrolment-store-proxy").fullServiceUrl
 
   lazy val legacyEnrolmentKey: String           = configuration.get[String]("keys.legacy.enrolmentKey")
   lazy val legacyEnrolmentIdentifierKey: String = configuration.get[String]("keys.legacy.enrolmentIdentifierKey")

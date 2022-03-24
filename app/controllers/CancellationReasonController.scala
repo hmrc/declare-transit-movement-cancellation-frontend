@@ -32,7 +32,7 @@ import views.html.{CancellationReason, TechnicalDifficulties}
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class CancellationReasonController @Inject()(
+class CancellationReasonController @Inject() (
   override val messagesApi: MessagesApi,
   identify: IdentifierAction,
   checkCancellationStatus: CheckCancellationStatusProvider,
@@ -49,7 +49,7 @@ class CancellationReasonController @Inject()(
     extends FrontendBaseController
     with I18nSupport {
 
-  private val form     = formProvider()
+  private val form = formProvider()
 
   def onPageLoad(departureId: DepartureId): Action[AnyContent] =
     (identify andThen checkCancellationStatus(departureId) andThen getData(departureId) andThen requireData).async {
@@ -64,19 +64,17 @@ class CancellationReasonController @Inject()(
         form
           .bindFromRequest()
           .fold(
-            formWithErrors => {
-              Future.successful(BadRequest(view(formWithErrors, departureId, request.lrn, commentMaxLength)))
-            },
-            value => {
+            formWithErrors => Future.successful(BadRequest(view(formWithErrors, departureId, request.lrn, commentMaxLength))),
+            value =>
               Future
                 .fromTry(request.userAnswers.set(CancellationReasonPage(departureId), value))
-                .flatMap(updatedAnswers =>
-                  cancellationSubmissionService.submitCancellation(updatedAnswers).flatMap {
-                    case Right(_) => Future.successful(Redirect(navigator.nextPage(CancellationReasonPage(departureId), mode, updatedAnswers, departureId)))
-                    case Left(_)  => Future.successful(InternalServerError(technicalDifficulties(appConfig.contactHost)))
-                })
-            }
+                .flatMap(
+                  updatedAnswers =>
+                    cancellationSubmissionService.submitCancellation(updatedAnswers).flatMap {
+                      case Right(_) => Future.successful(Redirect(navigator.nextPage(CancellationReasonPage(departureId), mode, updatedAnswers, departureId)))
+                      case Left(_)  => Future.successful(InternalServerError(technicalDifficulties(appConfig.contactHost)))
+                    }
+                )
           )
-
     }
 }

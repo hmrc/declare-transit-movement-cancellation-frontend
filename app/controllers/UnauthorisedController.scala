@@ -23,7 +23,7 @@ import views.html.Unauthorised
 
 import javax.inject.Inject
 
-class UnauthorisedController @Inject()(val controllerComponents: MessagesControllerComponents, view: Unauthorised)
+class UnauthorisedController @Inject() (val controllerComponents: MessagesControllerComponents, view: Unauthorised)
     extends FrontendBaseController
     with I18nSupport {
 

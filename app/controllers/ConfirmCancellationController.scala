@@ -30,7 +30,7 @@ import views.html.ConfirmCancellation
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ConfirmCancellationController @Inject()(
+class ConfirmCancellationController @Inject() (
   override val messagesApi: MessagesApi,
   identify: IdentifierAction,
   sessionRepository: SessionRepository,
@@ -44,7 +44,7 @@ class ConfirmCancellationController @Inject()(
     extends FrontendBaseController
     with I18nSupport {
 
-  private val form     = formProvider()
+  private val form = formProvider()
 
   def onPageLoad(departureId: DepartureId): Action[AnyContent] =
     (identify andThen checkCancellationStatus(departureId) andThen getData(departureId)).async {
@@ -58,9 +58,7 @@ class ConfirmCancellationController @Inject()(
         form
           .bindFromRequest()
           .fold(
-            formWithErrors => {
-              Future.successful(BadRequest(view(formWithErrors, departureId, request.lrn)))
-            },
+            formWithErrors => Future.successful(BadRequest(view(formWithErrors, departureId, request.lrn))),
             value => {
               val userAnswers = request.userAnswers match {
                 case Some(value) => value

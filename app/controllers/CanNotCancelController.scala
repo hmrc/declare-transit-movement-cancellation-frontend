@@ -24,7 +24,7 @@ import views.html.CanNotCancel
 
 import javax.inject.Inject
 
-class CanNotCancelController @Inject()(
+class CanNotCancelController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   view: CanNotCancel,
   appConfig: FrontendAppConfig

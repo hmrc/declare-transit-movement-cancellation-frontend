@@ -29,7 +29,7 @@ import uk.gov.hmrc.play.http.HeaderCarrierConverter
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class CheckCancellationStatusProvider @Inject()(
+class CheckCancellationStatusProvider @Inject() (
   departureMovementConnector: DepartureMovementConnector
 )(implicit ec: ExecutionContext) {
 

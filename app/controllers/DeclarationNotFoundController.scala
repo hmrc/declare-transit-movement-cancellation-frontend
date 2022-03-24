@@ -24,7 +24,7 @@ import views.html.DeclarationNotFound
 
 import javax.inject.Inject
 
-class DeclarationNotFoundController @Inject()(
+class DeclarationNotFoundController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   view: DeclarationNotFound,
   appConfig: FrontendAppConfig

@@ -27,7 +27,7 @@ import play.api.test.Helpers._
 
 import scala.concurrent.Future
 
-class ConfirmCancellationControllerSpec extends SpecBase  {
+class ConfirmCancellationControllerSpec extends SpecBase {
 
   def onwardRoute = Call("GET", "/foo")
 
@@ -41,7 +41,7 @@ class ConfirmCancellationControllerSpec extends SpecBase  {
 
       dataRetrievalWithData(emptyUserAnswers)
 
-      val request        = FakeRequest(GET, confirmCancellationRoute)
+      val request = FakeRequest(GET, confirmCancellationRoute)
 
       val result = route(app, request).value
 
@@ -55,7 +55,7 @@ class ConfirmCancellationControllerSpec extends SpecBase  {
       val userAnswers = UserAnswers(departureId, eoriNumber).set(ConfirmCancellationPage(departureId), true).success.value
       dataRetrievalWithData(userAnswers)
 
-      val request        = FakeRequest(GET, confirmCancellationRoute)
+      val request = FakeRequest(GET, confirmCancellationRoute)
 
       val result = route(app, request).value
 
@@ -108,7 +108,7 @@ class ConfirmCancellationControllerSpec extends SpecBase  {
 
       dataRetrievalWithData(emptyUserAnswers)
 
-      val request        = FakeRequest(POST, confirmCancellationRoute).withFormUrlEncodedBody(("value", ""))
+      val request = FakeRequest(POST, confirmCancellationRoute).withFormUrlEncodedBody(("value", ""))
 
       val result = route(app, request).value
 

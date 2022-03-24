@@ -17,47 +17,40 @@
 package handlers
 
 import play.Logger
-
-import javax.inject.{Inject, Singleton}
+import play.api.PlayException
 import play.api.http.HttpErrorHandler
 import play.api.http.Status._
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.Results._
 import play.api.mvc.{RequestHeader, Result}
-import play.api.PlayException
 import uk.gov.hmrc.play.bootstrap.frontend.http.ApplicationException
 
-import scala.concurrent.{ExecutionContext, Future}
+import javax.inject.{Inject, Singleton}
+import scala.concurrent.Future
 
 // NOTE: There should be changes to bootstrap to make this easier, the API in bootstrap should allow a `Future[Html]` rather than just an `Html`
 @Singleton
-class ErrorHandler @Inject()(
+class ErrorHandler @Inject() (
   val messagesApi: MessagesApi
-)(implicit ec: ExecutionContext)
-    extends HttpErrorHandler
+) extends HttpErrorHandler
     with I18nSupport {
 
   val logger: Logger.ALogger = Logger.of("ErrorHandler")
 
-  override def onClientError(request: RequestHeader, statusCode: Int, message: String = ""): Future[Result] = {
-
-    implicit val rh: RequestHeader = request
-
+  override def onClientError(request: RequestHeader, statusCode: Int, message: String = ""): Future[Result] =
     statusCode match {
-      case BAD_REQUEST =>
-        Future.successful(Redirect(controllers.routes.ErrorController.badRequest()))
       case NOT_FOUND =>
         Future.successful(Redirect(controllers.routes.ErrorController.notFound()))
+      case result if isClientError(result) =>
+        Future.successful(Redirect(controllers.routes.ErrorController.badRequest()))
       case _ =>
         Future.successful(Redirect(controllers.routes.ErrorController.technicalDifficulties()))
     }
-  }
 
   override def onServerError(request: RequestHeader, exception: Throwable): Future[Result] = {
 
-    implicit val rh: RequestHeader = request
-
     logError(request, exception)
+
     exception match {
       case ApplicationException(result, _) =>
         Future.successful(result)
@@ -72,9 +65,12 @@ class ErrorHandler @Inject()(
         |
         |! %sInternal server error, for (%s) [%s] ->
         | """.stripMargin.format(ex match {
-        case p: PlayException => "@" + p.id + " - "
-        case _                => ""
-      }, request.method, request.uri),
+                                   case p: PlayException => "@" + p.id + " - "
+                                   case _                => ""
+                                 },
+                                 request.method,
+                                 request.uri
+      ),
       ex
     )
 }

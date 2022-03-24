@@ -43,8 +43,8 @@ class CancellationReasonControllerSpec extends SpecBase with MockitoSugar with J
 
       dataRetrievalWithData(emptyUserAnswers)
 
-      val request        = FakeRequest(GET, cancellationReasonRoute)
-      val result = route(app, request).value
+      val request = FakeRequest(GET, cancellationReasonRoute)
+      val result  = route(app, request).value
 
       status(result) mustEqual OK
 
@@ -58,8 +58,8 @@ class CancellationReasonControllerSpec extends SpecBase with MockitoSugar with J
 
       dataRetrievalWithData(userAnswers)
 
-      val request        = FakeRequest(GET, cancellationReasonRoute)
-      val result = route(app, request).value
+      val request = FakeRequest(GET, cancellationReasonRoute)
+      val result  = route(app, request).value
 
       status(result) mustEqual OK
 
@@ -95,7 +95,7 @@ class CancellationReasonControllerSpec extends SpecBase with MockitoSugar with J
 
       dataRetrievalWithData(emptyUserAnswers)
 
-      val request        = FakeRequest(POST, cancellationReasonRoute)
+      val request = FakeRequest(POST, cancellationReasonRoute)
         .withFormUrlEncodedBody(("value", "answer"))
 
       val result = route(app, request).value
@@ -110,7 +110,7 @@ class CancellationReasonControllerSpec extends SpecBase with MockitoSugar with J
 
       dataRetrievalWithData(emptyUserAnswers)
 
-      val request        = FakeRequest(POST, cancellationReasonRoute).withFormUrlEncodedBody(("value", ""))
+      val request = FakeRequest(POST, cancellationReasonRoute).withFormUrlEncodedBody(("value", ""))
 
       val result = route(app, request).value
 

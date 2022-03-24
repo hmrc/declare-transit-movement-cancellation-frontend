@@ -23,7 +23,7 @@ import views.html.UnauthorisedGroupAccess
 
 import javax.inject.Inject
 
-class UnauthorisedWithGroupAccessController @Inject()(val controllerComponents: MessagesControllerComponents, view: UnauthorisedGroupAccess)
+class UnauthorisedWithGroupAccessController @Inject() (val controllerComponents: MessagesControllerComponents, view: UnauthorisedGroupAccess)
     extends FrontendBaseController
     with I18nSupport {
 
