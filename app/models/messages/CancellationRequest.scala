@@ -37,7 +37,7 @@ case class CancellationRequest(
     <HEAHEA>
       <DocNumHEA5>{movementReferenceNumber}</DocNumHEA5>
       <DatOfCanReqHEA147>{dateOfCancellation.format(dateFormatter)}</DatOfCanReqHEA147>
-      <CanReaHEA250>{cancellationReason}</CanReaHEA250>
+      <CanReaHEA250>{escapeXml(cancellationReason)}</CanReaHEA250>
     </HEAHEA>
     {principal.toXml}
     <CUSOFFDEPEPT>
