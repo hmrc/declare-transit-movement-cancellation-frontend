@@ -39,18 +39,18 @@ class Renderer @Inject() (frontendAppConfig: FrontendAppConfig, appConfig: Front
   private def renderTemplate(template: String, ctx: JsObject)(implicit request: RequestHeader): Future[Html] =
     renderer.render(template, ctx ++ Json.obj("config" -> config))
 
-  private lazy val config: JsObject = Json.obj(
-    "betaFeedbackUnauthenticatedUrl" -> appConfig.betaFeedbackUnauthenticatedUrl,
-    "serviceIdentifier"              -> appConfig.contactFormServiceIdentifier,
-    "contactHost"                    -> appConfig.contactHost,
-    "signOutUrl"                     -> appConfig.signOutUrl,
-    "timeout"                        -> appConfig.timeoutSeconds,
-    "countdown"                      -> appConfig.countdownSeconds,
-    "trackingConsentUrl"             -> frontendAppConfig.trackingConsentUrl,
-    "gtmContainer"                   -> frontendAppConfig.gtmContainer,
-    "serviceUrl"                     -> frontendAppConfig.serviceUrl,
-    "userResearchUrl"                -> appConfig.userResearchUrl,
-    "showPhaseBanner"                -> appConfig.showPhaseBanner,
-    "showUserResearchBanner"         -> appConfig.showUserResearchBanner
+  private def config(implicit requestHeader: RequestHeader): JsObject = Json.obj(
+    "feedbackUrl"            -> appConfig.feedbackUrl,
+    "serviceIdentifier"      -> appConfig.contactFormServiceIdentifier,
+    "contactHost"            -> appConfig.contactHost,
+    "signOutUrl"             -> appConfig.signOutUrl,
+    "timeout"                -> appConfig.timeoutSeconds,
+    "countdown"              -> appConfig.countdownSeconds,
+    "trackingConsentUrl"     -> frontendAppConfig.trackingConsentUrl,
+    "gtmContainer"           -> frontendAppConfig.gtmContainer,
+    "serviceUrl"             -> frontendAppConfig.serviceUrl,
+    "userResearchUrl"        -> appConfig.userResearchUrl,
+    "showPhaseBanner"        -> appConfig.showPhaseBanner,
+    "showUserResearchBanner" -> appConfig.showUserResearchBanner
   )
 }
