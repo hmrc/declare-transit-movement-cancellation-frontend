@@ -16,6 +16,7 @@
 
 package repositories
 
+import config.FrontendAppConfig
 import models.{DepartureId, EoriNumber, UserAnswers}
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.freespec.AnyFreeSpec
@@ -23,7 +24,7 @@ import org.scalatest.matchers.must.Matchers
 import org.scalatest.{BeforeAndAfterEach, OptionValues}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.libs.json.Json
-import reactivemongo.play.json.collection.JSONCollection
+import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -34,28 +35,19 @@ class SessionRepositorySpec extends AnyFreeSpec
   with BeforeAndAfterEach
   with GuiceOneAppPerSuite
   with OptionValues
-  with MongoSuite {
+  with DefaultPlayMongoRepositorySupport[UserAnswers] {
 
-  private val service = app.injector.instanceOf[SessionRepository]
+  private val frontendAppConfig: FrontendAppConfig = app.injector.instanceOf[FrontendAppConfig]
+
+  override protected def repository: SessionRepository = new SessionRepository(mongoComponent, frontendAppConfig)
 
   private val userAnswer1 = UserAnswers(DepartureId(0), EoriNumber("EoriNumber1"), Json.obj("foo" -> "bar"))
   private val userAnswer2 = UserAnswers(DepartureId(1), EoriNumber("EoriNumber2"), Json.obj("bar" -> "foo"))
 
   override def beforeEach(): Unit = {
     super.beforeEach()
-    database.flatMap {
-      db =>
-        val jsonCollection = db.collection[JSONCollection]("user-answers")
-
-        jsonCollection
-          .insert(ordered = false)
-          .many(Seq(userAnswer1, userAnswer2))
-    }.futureValue
-  }
-
-  override def afterEach(): Unit = {
-    super.afterEach()
-    database.flatMap(_.drop())
+    insert(userAnswer1).futureValue
+    insert(userAnswer2).futureValue
   }
 
   "SessionRepository" - {
@@ -64,7 +56,7 @@ class SessionRepositorySpec extends AnyFreeSpec
 
       "must return UserAnswers when given a DepartureId" in {
 
-        val result = service.get(DepartureId(0), EoriNumber("EoriNumber1")).futureValue
+        val result = repository.get(DepartureId(0)).futureValue
 
         result.value.id mustBe userAnswer1.id
         result.value.eoriNumber mustBe userAnswer1.eoriNumber
@@ -73,7 +65,7 @@ class SessionRepositorySpec extends AnyFreeSpec
 
       "must return None when no UserAnswers match DepartureId" in {
 
-        val result = service.get(DepartureId(3), EoriNumber("EoriNumber1")).futureValue
+        val result = repository.get(DepartureId(3)).futureValue
 
         result mustBe None
       }
@@ -85,10 +77,9 @@ class SessionRepositorySpec extends AnyFreeSpec
 
         val userAnswer = UserAnswers(DepartureId(3), EoriNumber("EoriNumber3"), Json.obj("foo" -> "bar"))
 
-        val setResult = service.set(userAnswer).futureValue
+        val setResult = repository.set(userAnswer).futureValue
 
-        val getResult = service.get(DepartureId(3), EoriNumber("EoriNumber3")).futureValue.value
-
+        val getResult = repository.get(DepartureId(3)).futureValue.value
 
         setResult mustBe true
         getResult.id mustBe userAnswer.id
