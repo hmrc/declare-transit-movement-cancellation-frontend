@@ -3,19 +3,19 @@ import play.core.PlayVersion
 
 object AppDependencies {
 
-  private val mongoVersion = "0.68.0"
+  private val mongoVersion = "0.71.0"
 
   val compile: Seq[ModuleID] = Seq(
     play.sbt.PlayImport.ws,
     "uk.gov.hmrc.mongo"    %% "hmrc-mongo-play-28"            % mongoVersion,
     "uk.gov.hmrc"          %% "logback-json-logger"           % "5.1.0",
-    "uk.gov.hmrc"          %% "play-conditional-form-mapping" % "1.10.0-play-28",
+    "uk.gov.hmrc"          %% "play-conditional-form-mapping" % "1.11.0-play-28",
     "uk.gov.hmrc"          %% "bootstrap-frontend-play-28"    % "7.3.0",
-    "uk.gov.hmrc"          %% "play-language"                 % "5.1.0-play-28",
-    "uk.gov.hmrc"          %% "play-nunjucks"                 % "0.35.0-play-28",
-    "uk.gov.hmrc"          %% "play-nunjucks-viewmodel"       % "0.15.0-play-28",
-    "org.webjars.npm"      %  "govuk-frontend"                % "3.14.0",
-    "uk.gov.hmrc.webjars"  %  "hmrc-frontend"                 % "3.4.0",
+    "uk.gov.hmrc"          %% "play-language"                 % "5.3.0-play-28",
+    "uk.gov.hmrc"          %% "play-nunjucks"                 % "0.40.0-play-28",
+    "uk.gov.hmrc"          %% "play-nunjucks-viewmodel"       % "0.16.0-play-28",
+    "org.webjars.npm"      %  "govuk-frontend"                % "4.3.1",
+    "uk.gov.hmrc.webjars"  %  "hmrc-frontend"                 % "5.7.0",
     "com.lucidchart"       %% "xtract"                        % "2.2.1"
   )
 
