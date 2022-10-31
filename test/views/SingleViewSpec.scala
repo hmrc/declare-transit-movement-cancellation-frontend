@@ -30,8 +30,8 @@ import play.twirl.api.Html
 import renderer.Renderer
 import uk.gov.hmrc.nunjucks.{DevelopmentNunjucksRoutesHelper, NunjucksConfigurationProvider, NunjucksRenderer, NunjucksSetup}
 import uk.gov.hmrc.viewmodels.NunjucksSupport
+import play.twirl.api.TwirlHelperImports.twirlJavaCollectionToScala
 
-import scala.collection.convert.ImplicitConversions._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 

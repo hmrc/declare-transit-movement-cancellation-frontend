@@ -36,7 +36,7 @@ class SessionRepository @Inject() (
       mongoComponent = mongoComponent,
       collectionName = SessionRepository.collectionName,
       domainFormat = UserAnswers.format,
-      indexes = SessionRepository.indexes(appConfig),
+      indexes = SessionRepository.indexes(appConfig).toSeq,
       replaceIndexes = appConfig.replaceIndexes
     ) {
 

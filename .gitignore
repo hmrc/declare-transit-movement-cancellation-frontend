@@ -28,3 +28,4 @@ project/.bloop/
 project/metals.sbt
 /.bsp/sbt.json
 .java-version
+.DS_Store
