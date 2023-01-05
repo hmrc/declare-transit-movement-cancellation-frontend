@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,8 +47,8 @@ class CancellationStatusActionSpec extends SpecBase with BeforeAndAfterEach with
 
   val renderer: Renderer = app.injector.instanceOf[Renderer]
 
-  override def beforeEach: Unit = {
-    super.beforeEach
+  override def beforeEach(): Unit = {
+    super.beforeEach()
     Mockito.reset(mockConnector)
   }
 
