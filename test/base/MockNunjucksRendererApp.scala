@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,13 +50,11 @@ trait MockNunjucksRendererApp extends GuiceOneAppPerSuite with BeforeAndAfterEac
 
   val mockSessionRepository: SessionRepository = mock[SessionRepository]
 
-  override def beforeEach {
-    Mockito.reset(
-      mockRenderer,
-      mockDataRetrievalActionProvider,
-      mockCheckCancellationStatusProvider,
-      mockSessionRepository
-    )
+  override def beforeEach(): Unit = {
+    Mockito.reset(mockRenderer)
+    Mockito.reset(mockDataRetrievalActionProvider)
+    Mockito.reset(mockCheckCancellationStatusProvider)
+    Mockito.reset(mockSessionRepository)
     super.beforeEach()
   }
 

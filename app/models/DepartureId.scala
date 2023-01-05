@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ object DepartureId {
   implicit lazy val pathBindable: PathBindable[DepartureId] = new PathBindable[DepartureId] {
 
     override def bind(key: String, value: String): Either[String, DepartureId] =
-      implicitly[PathBindable[Int]].bind(key, value).right.map(DepartureId(_))
+      implicitly[PathBindable[Int]].bind(key, value).map(DepartureId(_))
 
     override def unbind(key: String, value: DepartureId): String =
       value.index.toString
