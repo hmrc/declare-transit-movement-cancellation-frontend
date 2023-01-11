@@ -33,7 +33,6 @@ object AppDependencies {
     "org.scalatestplus"           %% "scalacheck-1-17"          % "3.2.15.0",
     "com.github.tomakehurst"      %  "wiremock-standalone"      % "2.27.2",
     "com.vladsch.flexmark"        %  "flexmark-all"             % "0.62.2"
-
   ).map(_ % "test, it")
 
   def apply(): Seq[ModuleID] = compile ++ test
