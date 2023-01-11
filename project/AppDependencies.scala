@@ -14,7 +14,7 @@ object AppDependencies {
     "uk.gov.hmrc"          %% "play-language"                 % "6.1.0-play-28",
     "uk.gov.hmrc"          %% "play-nunjucks"                 % "0.41.0-play-28",
     "uk.gov.hmrc"          %% "play-nunjucks-viewmodel"       % "0.17.0-play-28",
-    "org.webjars.npm"      %  "govuk-frontend"                % "4.3.1",
+    "org.webjars.npm"      %  "govuk-frontend"                % "4.4.1",
     "uk.gov.hmrc.webjars"  %  "hmrc-frontend"                 % "5.19.0",
     "com.lucidchart"       %% "xtract"                        % "2.2.1"
   )
