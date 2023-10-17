@@ -39,7 +39,7 @@ class SessionRepositorySpec extends AnyFreeSpec
 
   private val frontendAppConfig: FrontendAppConfig = app.injector.instanceOf[FrontendAppConfig]
 
-  override protected def repository: SessionRepository = new SessionRepository(mongoComponent, frontendAppConfig)
+  override protected val repository: SessionRepository = new SessionRepository(mongoComponent, frontendAppConfig)
 
   private val userAnswer1 = UserAnswers(DepartureId(0), EoriNumber("EoriNumber1"), Json.obj("foo" -> "bar"))
   private val userAnswer2 = UserAnswers(DepartureId(1), EoriNumber("EoriNumber2"), Json.obj("bar" -> "foo"))
