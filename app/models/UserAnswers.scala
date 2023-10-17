@@ -18,7 +18,6 @@ package models
 
 import play.api.libs.json._
 import queries.{Gettable, Settable}
-import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
 
 import java.time.{Instant, LocalDateTime, ZoneOffset}
 import scala.util.{Failure, Success, Try}
@@ -71,12 +70,12 @@ object UserAnswers {
   import play.api.libs.functional.syntax._
 
   implicit lazy val reads: Reads[UserAnswers] = {
-    implicit val localDateTimeReads: Reads[LocalDateTime] = {
+    implicit val localDateTimeReader: Reads[LocalDateTime] = {
       val reactiveMongoReads = (__ \ "$date").read[Long].map {
         millis =>
           LocalDateTime.ofInstant(Instant.ofEpochMilli(millis), ZoneOffset.UTC)
       }
-      val hmrcMongoReads = MongoJavatimeFormats.localDateTimeReads
+      val hmrcMongoReads = localDateTimeReads
       hmrcMongoReads orElse reactiveMongoReads
     }
 
@@ -93,8 +92,21 @@ object UserAnswers {
       (__ \ "_id").write[DepartureId] and
         (__ \ "eoriNumber").write[EoriNumber] and
         (__ \ "data").write[JsObject] and
-        (__ \ "lastUpdated").write(MongoJavatimeFormats.localDateTimeWrites)
+        (__ \ "lastUpdated").write(localDateTimeWrites)
     )(unlift(UserAnswers.unapply))
 
   implicit lazy val format: Format[UserAnswers] = Format(reads, writes)
+
+  //TODO: Change LocalDateTime to Instant and remove below methods
+  private val localDateTimeReads: Reads[LocalDateTime] =
+    Reads
+      .at[String](__ \ "$date" \ "$numberLong")
+      .map(
+        dateTime => Instant.ofEpochMilli(dateTime.toLong).atZone(ZoneOffset.UTC).toLocalDateTime
+      )
+
+  private val localDateTimeWrites: Writes[LocalDateTime] =
+    Writes
+      .at[String](__ \ "$date" \ "$numberLong")
+      .contramap(_.toInstant(ZoneOffset.UTC).toEpochMilli.toString)
 }
