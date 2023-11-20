@@ -3,8 +3,8 @@ import play.core.PlayVersion
 
 object AppDependencies {
 
-  private val bootstrapVersion = "7.22.0"
-  private val mongoVersion = "1.3.0"
+  private val bootstrapVersion = "7.23.0"
+  private val mongoVersion = "1.4.0"
 
   val compile: Seq[ModuleID] = Seq(
     play.sbt.PlayImport.ws,
@@ -21,16 +21,16 @@ object AppDependencies {
 
   val test: Seq[ModuleID] = Seq(
     "uk.gov.hmrc.mongo"           %% "hmrc-mongo-test-play-28"  % mongoVersion,
-    "org.scalatest"               %% "scalatest"                % "3.2.15",
+    "org.scalatest"               %% "scalatest"                % "3.2.17",
     "org.pegdown"                 %  "pegdown"                  % "1.6.0",
     "uk.gov.hmrc"                 %% "bootstrap-test-play-28"   % bootstrapVersion,
     "org.jsoup"                   %  "jsoup"                    % "1.15.4",
     "com.typesafe.play"           %% "play-test"                % PlayVersion.current,
     "io.github.wolfendale"        %% "scalacheck-gen-regexp"    % "1.1.0",
     "org.mockito"                 %  "mockito-core"             % "5.2.0",
-    "org.scalatestplus"           %% "mockito-4-6"              % "3.2.15.0",
+    "org.scalatestplus"           %% "mockito-4-11"             % "3.2.17.0",
     "org.scalacheck"              %% "scalacheck"               % "1.17.0",
-    "org.scalatestplus"           %% "scalacheck-1-17"          % "3.2.15.0",
+    "org.scalatestplus"           %% "scalacheck-1-17"          % "3.2.17.0",
     "com.github.tomakehurst"      %  "wiremock-standalone"      % "2.27.2",
     "com.vladsch.flexmark"        %  "flexmark-all"             % "0.62.2"
   ).map(_ % "test, it")
