@@ -13,8 +13,8 @@ object AppDependencies {
     "uk.gov.hmrc"          %% "bootstrap-frontend-play-30"              % bootstrapVersion,
     "uk.gov.hmrc"          %% "play-language-play-30"                   % "7.0.0",
     "uk.gov.hmrc"          %% "play-nunjucks-viewmodel-play-30"         % "1.0.0",
-    "org.webjars.npm"      %  "govuk-frontend"                          % "4.7.0",
-    "uk.gov.hmrc.webjars"  %  "hmrc-frontend"                           % "5.50.0",
+    "org.webjars.npm"      %  "govuk-frontend"                          % "4.8.0",
+    "uk.gov.hmrc.webjars"  %  "hmrc-frontend"                           % "5.60.0",
     "com.lucidchart"       %% "xtract"                                  % "2.3.0"
   )
 
